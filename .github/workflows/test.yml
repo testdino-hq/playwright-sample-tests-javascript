@@ -1,0 +1,109 @@
+# .github/workflows/playwright-daily.yml
+# Runs Playwright test shards every day at **11 : 42 AM IST** (06 : 12 UTC)
+# plus anytime you trigger it manually from the Actions tab.
+
+name: Run Playwright tests
+
+on:
+  schedule:
+    # GitHub cron is always UTC → 06:12 UTC = 11:42 AM IST (UTC+5:30)
+    # - cron: '12 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    name: Run Playwright shards
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1,2,3,4,5,6,7,8,9,10]
+        shardTotal: [10]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Create .env file
+        run: |
+          echo "USERNAME=${{ secrets.USERNAME }}" >> .env
+          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+     
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install deps + browsers
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run shard ${{ matrix.shardIndex }}
+        run: npm run test:chrome -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+      - name: Upload blob report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: ./blob-report
+          retention-days: 1
+
+  merge-reports:
+    name: Merge Reports
+    needs: run-tests
+    if: always()             # run even if some shards fail
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install deps + browsers
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Download all blob reports
+        uses: actions/download-artifact@v4
+        with:
+          path: ./all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge HTML & JSON reports
+        run: npx playwright merge-reports --config=playwright.config.js ./all-blob-reports
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Playwright Test Report
+          path: ./playwright-report
+          retention-days: 14
+
+      - name: Send TestDino report
+        run: |
+          npx --yes tdpw ./playwright-report \
+            --token="trx_production_75deca4b6fbb32963853ca189506496d60835761c32e54fd9f6787b00c86158f" \
+            --upload-html \
+            --verbose

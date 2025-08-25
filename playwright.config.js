@@ -12,13 +12,14 @@ export default defineConfig({
 
   // In CI we only show a list reporter. The workflow sets --reporter=blob.
   // Locally you also get HTML and JSON.
-  reporter: isCI
-    ? [['list']]
-    : [
-        ['list'],
-        ['html', { outputFolder: 'playwright-report', open: 'never' }],
-        ['json', { outputFile: 'report.json' }],
-      ],
+  reporter: [
+    ['html', {
+      outputFolder: 'playwright-report',
+      open: 'never'
+    }],
+    ['blob', { outputDir: 'blob-report' }], // Use blob reporter
+    ['json', { outputFile: './playwright-report/report.json' }],
+  ],
 
   use: {
     baseURL: 'https://demo.alphabin.co/',

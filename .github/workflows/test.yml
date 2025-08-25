@@ -17,8 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1,2,3,4,5,6,7,8,9,10]
-        shardTotal: [10]
+        shardIndex: [1,2]
+        shardTotal: [2]
 
     steps:
       - uses: actions/checkout@v4
@@ -91,7 +91,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge HTML & JSON reports
-        run: npx playwright merge-reports --reporter=html,json ./all-blob-reports
+        run: npx playwright merge-reports --config=playwright.config.js ./all-blob-reports
 
       - name: Upload combined report
         uses: actions/upload-artifact@v4

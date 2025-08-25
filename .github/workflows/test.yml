@@ -47,7 +47,7 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run shard ${{ matrix.shardIndex }}
-        run: npm run test:chrome -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: npx playwright test --project=chromium --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       - name: Upload blob report
         if: ${{ !cancelled() }}

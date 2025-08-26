@@ -12,15 +12,15 @@ class UserPage extends BasePage {
     }
 
     locators = {
-        loginPageTitle: `//h2[text()=' Sign In']`,
+        loginPageTitle: `//h2[text()=\' Sign In\']`,
         userName: `[placeholder="Your email address"]`,
         password: `[placeholder="Your password"]`,
-        loginButton: `//button[text()='Sign in']`,
+        loginButton: `//button[text()=\'Sign in\']`,
         invalidLoginError: '[data-test="error"]',
-        userIcon: `//*[name()='svg'][.//*[name()='path' and contains(@d,'M25.1578 1')]]`,
-        logoutButton: `//p[text()='Log Out']`,
-        addressTab: `//p[text()='Addresses']`,
-        addAddressButton: `//button[text()='Add New Address']`,
+        userIcon: `//*[name()=\'svg\'][.//*[name()=\'path\' and contains(@d,\'M25.1578 1\')]]`,
+        logoutButton: `//p[text()=\'Log Out\']`,
+        addressTab: `//p[text()=\'Addresses\']`,
+        addAddressButton: `//button[text()=\'Add New Address\']`,
         firstName: `[name="firstname"]`,
         lastName: `[name="lastName"]`,
         contactNumber: `[name="contactNumber"]`,
@@ -30,13 +30,12 @@ class UserPage extends BasePage {
         state: `[name="state"]`,
         country: `[name="country"]`,
         zip: `[name="zipCode"]`,
-        saveAddressButton: `//button[text()='Save']`,
+        saveAddressButton: `//button[text()=\'Save\']`,
         addressLocator: `h3.font-medium`,
-        emailLocator: `p.text-gray-500.text-sm`,
-        editAddressButton: `(//*[@data-icon='edit'])[1]`,
-        deleteAddressButton: `(//*[@data-icon='delete'])[1]`,
-        detetebutton: `//button[normalize-space(text())='Delete']`,
-        updateAddressButton: `//button[text()='Update']`,
+        editAddressButton: `(//*[@data-icon=\'edit\'])[1]`,
+        deleteAddressButton: `(//*[@data-icon=\'delete\'])[1]`,
+        detetebutton: `//button[normalize-space(text())=\'Delete\']`,
+        updateAddressButton: `//button[text()=\'Update\']`,
         savePersonalInfo:`[aria-label="save"]`
 
     }
@@ -115,6 +114,82 @@ class UserPage extends BasePage {
         await expect(this.page.locator(this.locators.lastName)).toHaveValue('Testing');
         await expect(this.page.locator(this.locators.contactNumber)).toHaveValue('9999999999');
     }
+
+    locators = {
+        loginPageTitle: `//h2[text()=' Sign In']`,
+        userName: `[placeholder="Your email address"]`,
+        password: `[placeholder="Your password"]`,
+        loginButton: `//button[text()='Sign in']`,
+        invalidLoginError: '[data-test="error"]',
+        userIcon: `//*[name()='svg'][.//*[name()='path' and contains(@d,'M25.1578 1')]]`,
+        logoutButton: `//p[text()='Log Out']`,
+        lastName: `[name="lastName"]`,
+        contactNumber: `[name="contactNumber"]`,
+        saveAddressButton: `//button[text()='Save']`,
+        addressLocator: `h3.font-medium`,
+        editAddressButton: `(//*[@data-icon='edit'])[1]`,
+        deleteAddressButton: `(//*[@data-icon='delete'])[1]`,
+        detetebutton: `//button[normalize-space(text())='Delete']`,
+        updateAddressButton: `//button[text()='Update']`,
+        savePersonalInfo:`[aria-label="save"]`,
+        securityButton : `//button[text()="Security"]`,
+        enterNewPassword : `[placeholder="Enter new password"]`,
+        confirmNewPassword : `[placeholder="Confirm your password"]`,
+        updatePasswordButton : `[data-testid="my-profile-reset-password-button"]`,
+        updateNotification : 'div[role="status"][aria-live="polite"]',
+        addressTab : `[data-testid="menu-item-label"]`,
+        addAddressButton : `[data-testid="add-new-address-button"]`,
+        addNewAddressMenu : `//h2[text()='Add New Address']`,
+        addressingFirstName : `[data-testid="first-name-input"]`,
+        addressingEmail : `[data-testid="email-input"]`,
+        streetAddress : `[data-testid="street-address-input"]`,
+        city : `[data-testid="city-input"]`,
+        state : `[data-testid="state-input"]`,
+        country : `[data-testid="country-input"]`,
+        zipCode : `[data-testid="zip-code-input"]`,
+        saveAddressButton : `[data-testid="save-address-button"]`
+    }
+    async clickOnAddressTab() {
+        await this.page.locator(this.locators.addressTab).click();
+    }
+    async clickOnAddAddressButton() {
+        await this.page.locator(this.locators.addAddressButton).click();
+    }
+    async checkAddNewAddressMenu() {
+        await expect(this.page.locator(this.locators.addNewAddressMenu)).toBeVisible();
+    }
+    async fillAddressForm() {
+        await this.page.locator(this.locators.adressingFirstName).fill('Tester');
+        await this.page.locator(this.locators.adressingEmail).fill('testing123@example.com');
+        await this.page.locator(this.locators.streetAddress).fill('SBP, Utran');
+        await this.page.locator(this.locators.city).fill('Surat');
+        await this.page.locator(this.locators.state).fill('Gujarat');
+        await this.page.locator(this.locators.country).fill('India');
+        await this.page.locator(this.locators.zipCode).fill('12345');
+        await this.page.locator(this.locators.saveAddressButton).click();
+    }
+    async clickOnSecurityButton() {
+        await this.page.locator(this.locators.securityButton).click();
+    }
+    async enterNewPassword() {
+        await this.page.locator(this.locators.enterNewPassword).fill(process.env.NEW_PASSWORD);
+    }
+    async enterConfirmNewPassword() {
+        await this.page.locator(this.locators.confirmNewPassword).fill(process.env.NEW_PASSWORD);
+    }
+    async clickOnUpdatePasswordButton() {
+        await this.page.locator(this.locators.updatePasswordButton).click();
+    }
+    async revertPasswordBackToOriginal() {
+        await this.page.locator(this.locators.enterNewPassword).fill(process.env.PASSWORD);
+        await this.page.locator(this.locators.confirmNewPassword).fill(process.env.PASSWORD);
+        await this.page.locator(this.locators.updatePasswordButton).click();
+    }
+    async getUpdatePasswordNotification(){
+        await expect(this.page.locator(this.locators.updateNotification)).toBeVisible();
+        await expect(this.page.locator(this.locators.updateNotification)).toHaveText('Password updated successfully');
+    }
+
 
 }
 

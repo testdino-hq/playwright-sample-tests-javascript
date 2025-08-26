@@ -19,10 +19,11 @@ class LoginPage extends BasePage{
         invalidLoginError: '[data-test="error"]',
         userIcon: `//*[name()='svg'][.//*[name()='path' and contains(@d,'M25.1578 1')]]`,
         logoutButton: `//p[text()='Log Out']`,
-        
+        signupLink: `Sign up`,
+        successSignInMessage: `Logged in successfully`,
     }
 
-       async navigateToLoginPage() {
+    async navigateToLoginPage() {
         await this.navigateTo('/');
     }
 
@@ -69,6 +70,14 @@ class LoginPage extends BasePage{
     }
     async validateSignInPage() {
         await expect(this.getLoginPageTitle()).toBeVisible();
+    }
+
+    async clickOnSignupLink() {
+        await this.page.getByText(this.locators.signupLink).click();
+    }
+
+    async verifySuccessSignIn() {
+        await expect(this.page.getByText(this.locators.successSignInMessage)).toBeVisible({ timeout: 10000 });
     }
 }
 

@@ -18,7 +18,50 @@ class HomePage extends BasePage{
             contactUsNav: `//li[text()="Contact Us"]`,
             allProductsNav: `//li[text()="All Products"]`,
             showNowButton: `//a[@href="/products"]/button[text()="Shop Now"]`,
+            ProductImage: `img[src="/products/Speaker.png"][alt="JBL Charge 4 Bluetooth Speaker"]`,
+            addToCartButton: `[data-testid="add-to-cart-button"]`,
+            AddCartNotification: `div[role="status"][aria-live="polite"]:has-text("Added to the cart")`,
+            priceRangeSlider2 : `[data-testid="all-products-price-range-input-1"]`,
+            priceRangeSlider1 : `[data-testid="all-products-price-range-input-0"]`,
+            filterButton : `[data-testid="all-products-filter-toggle"]`
         }
+    }
+
+    async clickOnFilterButton() {
+        await this.page.locator(this.locators.navbar.filterButton).click();
+    }
+
+    async AdjustPriceRangeSlider(minPrice, maxPrice) {
+        await this.page.locator(this.locators.navbar.priceRangeSlider1).fill(minPrice);
+        await this.page.locator(this.locators.navbar.priceRangeSlider2).fill(maxPrice);
+    }
+
+    async clickOnShopNowButton() {
+        await this.page.locator(this.locators.navbar.showNowButton).click();
+    }
+
+    getProductImage() {
+        return this.page.locator(this.locators.navbar.ProductImage);
+    }
+
+    async clickProductImage() {
+        await this.getProductImage().click();
+    }
+
+    getAddToCartButton() {
+        return this.page.locator(this.locators.navbar.addToCartButton);
+    }
+    
+    async clickAddToCartButton() {
+        await this.getAddToCartButton().click();
+    }
+
+    getAddCartNotification() {
+        return this.page.locator(this.locators.navbar.AddCartNotification);
+    }
+
+    async validateAddCartNotification() {
+        await expect(this.getAddCartNotification()).toBeVisible();
     }
 
     getHomeNav() {

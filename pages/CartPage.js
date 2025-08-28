@@ -28,7 +28,7 @@ class CartPage extends BasePage{
         totalValue: '[data-testid="total-value"]',
         checkoutButton: '[data-testid="checkout-button"]',
         viewCartButton: '[data-testid="view-cart-button"]',
-        shoppingCartIcon: "//*[name()='svg'][.//*[name()='path' and contains(@d,'M0 24C0 10')]]",
+        shoppingCartIcon: `[data-testid="header-cart-icon"]`,
     }
 
     async assertYourCartTitle() {

@@ -10,6 +10,7 @@ export default defineConfig({
   retries: isCI ? 1 : 0,
   workers: isCI ? 1 : 1,
 
+  timeout: 60 * 1000, // ⏱️ each test fails after 1 min
   // In CI we only show a list reporter. The workflow sets --reporter=blob.
   // Locally you also get HTML and JSON.
   reporter: [

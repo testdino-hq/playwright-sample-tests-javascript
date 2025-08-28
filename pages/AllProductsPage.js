@@ -19,6 +19,7 @@ class AllProductsPage extends BasePage{
         nthProductReviewCount: `[href*="/product-detail/product"] h2 + div span.text-sm`,
         nthProductWishlistIcon: '[aria-label="heart"]',
         nthProductWishlistIconCount: '.bg-orange-100'
+        
     }
 
     async assertAllProductsTitle() {

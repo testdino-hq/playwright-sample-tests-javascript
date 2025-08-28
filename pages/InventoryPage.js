@@ -23,6 +23,10 @@ class InventoryPage extends BasePage {
         addToCartIcon: "//*[name()='svg'][.//*[name()='path' and contains(@d,'M832 312H6')]]",
         goProHero10BlackTitle: "//h2[normalize-space()='GoPro HERO10 Black']",
         continueShoppingButton: "//button[normalize-space()='Continue Shopping']",
+        wishlistNotification: `div[role="status"][aria-live="polite"]:has-text("Added to the wishlist")`,
+        wishlistIconHeader : `[data-testid="header-wishlist-count"]`,
+        assertWishlistPage : `[data-testid="wishlist-title"]`,
+        wishlistAddToCard : `//button[normalize-space()='Add to Cart']`
 
     }
 
@@ -41,6 +45,21 @@ class InventoryPage extends BasePage {
     async addToWishlist() {
         await this.page.click(this.locators.wishlistIcon);
         // Add any additional assertions or actions needed after adding to wishlist
+    }
+    async assertWishlistIcon() {
+        await expect(this.page.locator(this.locators.wishlistNotification)).toBeVisible();
+    }
+
+    async clickOnWishlistIconHeader() {
+        await this.page.locator(this.locators.wishlistIconHeader).click({ force: true });
+    }
+
+    async assertWishlistPage() {
+        await expect(this.page.locator(this.locators.assertWishlistPage)).toBeVisible();
+    }
+
+    async clickOnWishlistAddToCard() {
+        await this.page.locator(this.locators.wishlistAddToCard).click({ force: true });
     }
 
     async clickOnAllProductsLink() {

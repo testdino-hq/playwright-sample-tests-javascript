@@ -267,3 +267,53 @@ test('Verify that a New User Can Successfully Complete the Journey from Registra
   await allPages.orderDetailsPage.assertOrderSummaryTotalValue(formattedSubtotal);
   await allPages.orderDetailsPage.clickBackToHomeButton();
 });
+test('Verify that user add product to cart before logging in and then complete order after logging in', async () => {
+  await test.step('Navigate and add product to cart before logging in', async () => {
+    await allPages.homePage.clickOnShopNowButton();
+    await allPages.homePage.clickProductImage();
+    await allPages.homePage.clickAddToCartButton();
+    await allPages.homePage.validateAddCartNotification();
+    await allPages.loginPage.clickOnUserProfileIcon();
+  })
+  await test.step('Login and complete order', async () => {
+    await login();
+    await allPages.cartPage.clickOnCartIcon();
+    await allPages.cartPage.clickOnCheckoutButton();
+    await allPages.checkoutPage.verifyCheckoutTitle();
+    await allPages.checkoutPage.selectCashOnDelivery();
+    await allPages.checkoutPage.verifyCashOnDeliverySelected();
+    await allPages.checkoutPage.clickOnPlaceOrder();
+    await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
+  })});
+  test('Verify that user can filter products by price range', async () => {
+    await login();
+    await allPages.homePage.clickOnShopNowButton();
+    await allPages.homePage.clickOnFilterButton();
+    await allPages.homePage.AdjustPriceRangeSlider('10000', '20000');
+    await allPages.homePage.clickOnFilterButton();
+  })
+  test('Verify if user can add product to wishlist, moves it to card and then checks out', async () => {
+    await login();
+  
+    await test.step('Add product to wishlistand then add to cart', async () => {
+      await allPages.homePage.clickOnShopNowButton();
+      await allPages.inventoryPage.addToWishlist();
+      await allPages.inventoryPage.assertWishlistIcon();
+      await allPages.inventoryPage.clickOnWishlistIconHeader();
+      await allPages.inventoryPage.assertWishlistPage();
+      await allPages.inventoryPage.clickOnWishlistAddToCard();
+    })
+  
+    await test.step('Checkout product added to cart', async () => {
+      await allPages.cartPage.clickOnCartIcon();
+      // await allPages.cartPage.verifyCartItemVisible('JBL Charge 4 Bluetooth Speaker');
+      await allPages.cartPage.clickOnCheckoutButton();
+      await allPages.checkoutPage.verifyCheckoutTitle();
+      // await allPages.checkoutPage.verifyProductInCheckout('JBL Charge 4 Bluetooth Speaker');
+      await allPages.checkoutPage.selectCashOnDelivery();
+      await allPages.checkoutPage.verifyCashOnDeliverySelected();
+      await allPages.checkoutPage.clickOnPlaceOrder();
+      await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
+    })
+  
+  })

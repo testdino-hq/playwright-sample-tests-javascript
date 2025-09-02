@@ -1,4 +1,4 @@
-# alphabin-demo-test-playwright
+# playwright-sample-tests
 
 Automated end-to-end tests for [Alphabin Demo](https://demo.alphabin.co/) using [Playwright](https://playwright.dev/).
 

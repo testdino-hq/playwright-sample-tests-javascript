@@ -3,7 +3,6 @@ import { expect, test } from '@playwright/test';
 import AllPages from '../pages/AllPages.js';
 import dotenv from 'dotenv';
 dotenv.config({ override: true });
-
 let allPages;
 
 test.beforeEach(async ({ page }) => {

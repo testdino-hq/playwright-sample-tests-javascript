@@ -576,6 +576,7 @@ test('Verify that user is able to submit a product review', async () => {
 //   })
 // });
 
+
 // test('Verify that the New User is able to add Addresses in the Address section', async () => {
 //     await login();
 //     await allPages.userPage.clickOnUserProfileIcon();

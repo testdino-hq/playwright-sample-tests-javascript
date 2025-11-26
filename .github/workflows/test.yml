@@ -113,21 +113,19 @@ jobs:
           path: ./playwright-report
           retention-days: 14
 
-      # - name: Send TestDino report
-      #   env:
-      #     NODE_ENV: staging
-      #   # run: |
-      #   #  npx --yes tdpw ./playwright-report \
-      #   #    --token="${{ secrets.TESTDINO_TOKEN }}" \
-      #   #    --upload-html \
-      #   #    --upload-traces \
-      #   #    --verbose
       - name: Send TestDino report
-        #env:
-         # NODE_ENV: staging
         run: |
-          TESTDINO_RUNTIME="staging" npx --yes tdpw ./playwright-report \
+         npx --yes tdpw ./playwright-report \
            --token="${{ secrets.TESTDINO_TOKEN }}" \
            --upload-html \
            --upload-traces \
            --verbose
+      # - name: Send TestDino report
+      #   #env:
+      #    # NODE_ENV: staging
+      #   run: |
+      #     TESTDINO_RUNTIME="staging" npx --yes tdpw ./playwright-report \
+      #      --token="${{ secrets.TESTDINO_TOKEN }}" \
+      #      --upload-html \
+      #      --upload-traces \
+      #      --verbose

@@ -8,7 +8,7 @@ export default defineConfig({
   snapshotDir: './__screenshots__',  // ✅ Baseline image storage
   fullyParallel: true,
   forbidOnly: isCI,
-  retries: isCI ? 2 : 0,
+  retries: isCI ? 1 : 1,
   workers: isCI ? 5 : 5,
 
   timeout: 60 * 1000,

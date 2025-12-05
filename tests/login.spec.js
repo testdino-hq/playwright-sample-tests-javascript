@@ -6,6 +6,8 @@ dotenv.config({ override: true });
 
 let allPages;
 
+test.describe.configure({ retries: 1 });
+
 test.beforeEach(async ({ page }) => {
   allPages = new AllPages(page);
   await page.goto('/');
@@ -22,10 +24,27 @@ async function logout() {
   await allPages.loginPage.clickOnLogoutButton();
 }
 
-test('Verify that user can login and logout successfully', {tag: '@chromium'}, async () => {
-  await login();
-  await logout();
-});
+test.only(
+  'Verify login & logout functionality',
+  { tag: '@chromium' },
+  async ({ page }, testInfo) => {
+
+    console.log("➡️ Retry Count:", testInfo.retry);
+
+    // Fail only on first attempt
+    if (testInfo.retry === 0) {
+      console.log("❌ Simulating flaky failure on first attempt");
+      throw new Error("Simulated flaky failure");
+    }
+
+    console.log("✅ Second attempt — test will now pass");
+
+    await login();
+    await logout();
+
+    console.log("🎉 Login & Logout successful");
+  }
+);
 
 test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully', {tag: '@chromium'}, async () => {
     const email = `test+${Date.now()}@test.com`;

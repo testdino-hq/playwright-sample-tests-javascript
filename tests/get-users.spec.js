@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("GET Users API", () => {
 
-  test("GET: Fetch all users", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: Fetch all users", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users");
 
     console.log("STATUS:", res.status());
@@ -15,7 +15,7 @@ test.describe("GET Users API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("GET: Validate total users > 0", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: Validate total users > 0", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users");
 
     console.log("========================");
@@ -26,7 +26,7 @@ test.describe("GET Users API", () => {
     expect(body.users.length).toBeGreaterThan(0);
   });
 
-  test("GET: Fetch user by ID = 1", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: Fetch user by ID = 1", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/1");
 
     console.log("========================");
@@ -36,7 +36,7 @@ test.describe("GET Users API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("GET: Validate user 1 has firstName field", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: Validate user 1 has firstName field", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/1");
 
     console.log("========================");
@@ -46,7 +46,7 @@ test.describe("GET Users API", () => {
     expect(body.firstName).toBeTruthy();
   });
 
-  test("GET: Validate user image exists", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: Validate user image exists", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/3");
 
     console.log("========================");
@@ -56,7 +56,7 @@ test.describe("GET Users API", () => {
     expect(body.image).toContain("https");
   });
 
-  test("GET: Invalid user ID returns 404", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: Invalid user ID returns 404", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/999999");
 
     console.log("========================");
@@ -65,7 +65,7 @@ test.describe("GET Users API", () => {
 
     expect(res.status()).toBe(404);
   });
-  test("GET: default users (no query) returns data object/array", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: default users (no query) returns data object/array", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users");
     console.log("STATUS:", res.status());
     const body = await res.json();
@@ -73,7 +73,7 @@ test.describe("GET Users API", () => {
     expect(body.users).toBeDefined();
   });
 
-  test("GET: limit param returns limited results", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: limit param returns limited results", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users?limit=5");
     console.log("STATUS:", res.status());
     const body = await res.json();
@@ -81,7 +81,7 @@ test.describe("GET Users API", () => {
     expect(body.users.length).toBeLessThanOrEqual(5);
   });
 
-  test("GET: skip param shifts results", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: skip param shifts results", { tag: "@api" }, async ({ request }) => {
     const res1 = await request.get("https://dummyjson.com/users?limit=2&skip=0");
     const res2 = await request.get("https://dummyjson.com/users?limit=2&skip=2");
     const b1 = await res1.json();
@@ -91,7 +91,7 @@ test.describe("GET Users API", () => {
     expect(b1.users[0].id).not.toBe(b2.users[0].id);
   });
 
-  test("GET: sorting / search query (if supported) returns filtered results", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: sorting / search query (if supported) returns filtered results", { tag: "@api" }, async ({ request }) => {
     // DummyJSON supports /users/search?q=term
     const res = await request.get("https://dummyjson.com/users/search?q=John");
     console.log("STATUS:", res.status());
@@ -100,7 +100,7 @@ test.describe("GET Users API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("GET: page boundaries - limit=0 returns empty", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: page boundaries - limit=0 returns empty", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users?limit=0");
     const body = await res.json();
     console.log("BODY:", body);
@@ -108,14 +108,14 @@ test.describe("GET Users API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("GET: combined params (limit + skip + q)", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: combined params (limit + skip + q)", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/search?q=ma&limit=3&skip=1");
     const body = await res.json();
     console.log("BODY:", body);
     expect(res.status()).toBe(200);
   });
  
-  test("GET: delayed response (3s) should return 200", { tag: "@api @testdino" }, async ({ request }) => {
+    test("GET: delayed response (3s) should return 200", { tag: "@api" }, async ({ request }) => {
     const res = await request.get("https://httpbin.org/delay/3");
     console.log("STATUS:", res.status());
     const txt = await res.text();
@@ -123,7 +123,7 @@ test.describe("GET Users API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("GET: enforce timeout (expect to fail if too slow) — set short timeout", { tag: "@api @testdino" }, async ({ request }) => {
+  test("GET: enforce timeout (expect to fail if too slow) — set short timeout", { tag: "@api" }, async ({ request }) => {
     // create a request with short timeout to simulate timeout behavior
     // Playwright's request API accepts timeout in seconds via request.get's timeout option (milliseconds)
     let thrown = false;

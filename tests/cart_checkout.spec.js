@@ -147,7 +147,15 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
     await allPages.checkoutPage.verifyCheckoutTitle();
     await allPages.checkoutPage.selectCashOnDelivery();
     await allPages.checkoutPage.verifyCashOnDeliverySelected();
-    await allPages.checkoutPage.fillShippingAddress(process.env.SFIRST_NAME, email, process.env.SCITY, process.env.SSTATE, process.env.SSTREET_ADD, process.env.SZIP_CODE, process.env.SCOUNTRY);
+    await allPages.checkoutPage.fillShippingAddress(
+      firstName, 
+      email, 
+      process.env.SCITY || 'New York', 
+      process.env.SSTATE || 'New York', 
+      process.env.SSTREET_ADD || '123 Main St', 
+      process.env.SZIP_CODE || '10001', 
+      process.env.SCOUNTRY || 'United States'
+    );
     await allPages.checkoutPage.clickSaveAddressButton();
     await allPages.checkoutPage.clickOnPlaceOrder();
     await allPages.checkoutPage.verifyOrderPlacedSuccessfully();

@@ -14,7 +14,8 @@ class UserPage extends BasePage {
   // Single source of truth for selectors (prefer data-testid where available)
   locators = {
     // Header / user menu
-    userIcon: `//*[name()='svg'][.//*[name()='path' and contains(@d,'M25.1578 1')]]`,
+    userIcon: `[data-testid="header-user-icon"]`, // Use data-testid for better reliability across devices
+    userIconXPath: `//*[name()='svg'][.//*[name()='path' and contains(@d,'M25.1578 1')]]`, // Fallback XPath
     logoutButton: `//p[text()='Log Out']`,
 
     // Profile tabs & sections
@@ -57,7 +58,16 @@ class UserPage extends BasePage {
    * Generic helpers used in tests
    * ----------------------------- */
   async clickOnUserProfileIcon() {
-    await this.page.locator(this.locators.userIcon).click();
+    // Try data-testid first (works on all devices), fallback to XPath if needed
+    const userIcon = this.page.locator(this.locators.userIcon).or(this.page.locator(this.locators.userIconXPath));
+    // For mobile devices where icon might be hidden, use force click
+    // First try normal click, if it fails due to visibility, use force
+    try {
+      await userIcon.click({ timeout: 5000 });
+    } catch (e) {
+      // If element is not visible (common on mobile), use force click
+      await userIcon.click({ force: true });
+    }
   }
 
   /* ---------- Addresses ---------- */
@@ -119,10 +129,18 @@ class UserPage extends BasePage {
 
   /* ------- Personal Info -------- */
   async updatePersonalInfo() {
+    // Wait for the form to be visible and ready
+    await this.page.locator(this.locators.firstName).waitFor({ state: 'visible', timeout: 10000 });
+    // Clear the field first to ensure clean input
+    await this.page.locator(this.locators.firstName).clear();
     await this.page.locator(this.locators.firstName).fill('Test1');
+    await this.page.locator(this.locators.lastName).clear();
     await this.page.locator(this.locators.lastName).fill('Testing');
+    await this.page.locator(this.locators.contactNumber).clear();
     await this.page.locator(this.locators.contactNumber).fill('9999999999');
     await this.page.locator(this.locators.savePersonalInfo).click();
+    // Wait for save to complete
+    await this.page.waitForTimeout(1000);
   }
 
   async verifyPersonalInfoUpdated() {

@@ -71,7 +71,10 @@ class OrderPage extends BasePage {
     }
 
     async clickOnPaginationButton(pageNumber) {
-        await this.page.locator(this.locators.paginationButton.replace('{}', pageNumber)).click({ force: true });
+        const button = this.page.locator(this.locators.paginationButton.replace('{}', pageNumber));
+        // Scroll into view before clicking to ensure element is visible
+        await button.scrollIntoViewIfNeeded();
+        await button.click({ force: true });
     }
 
     async verifyProductInOrderList(productName) {

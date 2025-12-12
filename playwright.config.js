@@ -50,6 +50,13 @@ export default defineConfig({
       use: { ...devices['Pixel 5'] },
       grep: /@android/, // only run tests tagged @android
     },
+
+    {
+      name: 'smoke',
+      use: { ...devices['Desktop Chrome'] },
+      grep: /@smoke/, // only run tests tagged @smoke
+    },
+    
     {
       name: 'ios',
       use: { ...devices['iPhone 12'] },

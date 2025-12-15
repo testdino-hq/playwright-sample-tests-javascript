@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("POST Create User API", () => {
 
-  test("POST: Create a new user", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Create a new user", { tag: "@api @testdino" }, async ({ request }) => {
     const payload = {
       firstName: "Kriti",
       lastName: "Verma",
@@ -19,7 +19,7 @@ test.describe("POST Create User API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("POST: Validate created user has id", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Validate created user has id", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.post("https://dummyjson.com/users/add", {
       data: { firstName: "Aarav" }
     });
@@ -30,7 +30,7 @@ test.describe("POST Create User API", () => {
     expect(body.id).toBeTruthy();
   });
 
-  test("POST: Create user with extra fields", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Create user with extra fields", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.post("https://dummyjson.com/users/add", {
       data: { firstName: "Riya", height: 165, weight: 50 }
     });
@@ -39,14 +39,14 @@ test.describe("POST Create User API", () => {
     expect(res.status()).toBe(200);
   });
 
-  test("POST: Create user without any fields", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Create user without any fields", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.post("https://dummyjson.com/users/add", { data: {} });
 
     console.log(await res.json());
     expect(res.status()).toBe(200);
   });
 
-  test("POST: Validate response has createdAt timestamp (simulated)", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Validate response has createdAt timestamp (simulated)", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.post("https://dummyjson.com/users/add", {
       data: { firstName: "Kriti", job: "QA" }
     });
@@ -58,7 +58,7 @@ test.describe("POST Create User API", () => {
     expect(body).toBeTruthy();
   });
 
-  test("POST: Validate server echoes fields", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Validate server echoes fields", { tag: "@api @testdino" }, async ({ request }) => {
     const payload = { firstName: "Meera", age: 29 };
     const res = await request.post("https://dummyjson.com/users/add", { data: payload });
 
@@ -67,14 +67,14 @@ test.describe("POST Create User API", () => {
 
     expect(body.firstName).toBe("Meera");
   });
-  test("GET: Bad endpoint returns 404", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Bad endpoint returns 404", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/non-existing-endpoint");
     console.log("STATUS:", res.status());
     console.log("TEXT:", await res.text());
     expect(res.status()).toBe(404);
   });
 
-  test("POST: Invalid JSON payload handling", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Invalid JSON payload handling", { tag: "@api @testdino" }, async ({ request }) => {
     // send a string as body to endpoints that expect JSON - Playwright will still send it as body
     const res = await request.post("https://dummyjson.com/users/add", {
       headers: { "Content-Type": "application/json" },
@@ -86,14 +86,14 @@ test.describe("POST Create User API", () => {
     expect(res.status()).not.toBe(500);
   });
 
-  test("GET: Too large ID param should return 404", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Too large ID param should return 404", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/999999999999");
     console.log("STATUS:", res.status());
     console.log("TEXT:", await res.text());
     expect(res.status()).toBe(404);
   });
 
-  test("DELETE: Deleting invalid id returns 200/response but not crash", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Deleting invalid id returns 200/response but not crash", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.delete("https://dummyjson.com/users/999999");
     console.log("STATUS:", res.status());
     console.log("TEXT:", await res.text());
@@ -108,7 +108,7 @@ test.describe("POST Create User API", () => {
     expect(res.status()).not.toBe(500);
   });
 
-  test("GET: Rate-limit simulation - quick repeated calls", { tag: "@api @testdino" }, async ({ request }) => {
+  test("Rate-limit simulation - quick repeated calls", { tag: "@api @testdino" }, async ({ request }) => {
     // fire a few quick requests and ensure none return 429 (most public test APIs don't enforce rate limits heavily)
     const urls = [1,2,3,4,5].map(i => request.get("https://dummyjson.com/users"));
     const results = await Promise.all(urls);
@@ -117,7 +117,7 @@ test.describe("POST Create User API", () => {
     expect(statuses.some(s => s === 429)).toBe(false);
   });
 
-  test("GET: user schema contains expected keys", { tag: "@api @testdino" }, async ({ request }) => {
+  test("user schema contains expected keys", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users/1");
     console.log("STATUS:", res.status());
     const body = await res.json();
@@ -129,7 +129,7 @@ test.describe("POST Create User API", () => {
     });
   });
 
-  test("GET: users list contains objects with id and email", { tag: "@api @testdino" }, async ({ request }) => {
+  test("users list contains objects with id and email", { tag: "@api @testdino" }, async ({ request }) => {
     const res = await request.get("https://dummyjson.com/users");
     const body = await res.json();
     console.log("SAMPLE USER:", body.users[0]);

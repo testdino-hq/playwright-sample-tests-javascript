@@ -26,7 +26,6 @@ class AllPages {
         this.userPage = new UserPage(page); // Instantiate UserPage
         this.orderDetailsPage = new OrderDetailsPage(page);
         this.contactUsPage = new ContactUsPage(page); 
-
     }
 }
 

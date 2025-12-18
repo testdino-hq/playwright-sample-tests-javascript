@@ -270,4 +270,3 @@ test('Verify that user add product to cart before logging in and then complete o
         await allPages.checkoutPage.clickOnPlaceOrder();
     });
 });
-

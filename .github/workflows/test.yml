@@ -59,7 +59,7 @@ jobs:
         run: npx playwright list --projects | cat
 
       - name: Run shard ${{ matrix.shardIndex }} 
-        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios|@api" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       - name: Upload blob report
         if: ${{ !cancelled() }}

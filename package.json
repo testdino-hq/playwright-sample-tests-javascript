@@ -5,13 +5,30 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Automated end-to-end tests for Ecommerce demo store using [Playwright](https://playwright.dev/).",
   "devDependencies": {
     "@playwright/test": "^1.55.1",
-    "@types/node": "^24.1.0"
+    "@types/node": "^24.1.0",
+    "mocha": "^11.7.5",
+    "mochawesome": "^7.1.4",
+    "monocart-reporter": "^2.9.23",
+    "playwright-core": "^1.56.1"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
     "playwright": "^1.55.0"
-  }
+  },
+  "main": "playwright.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Testdino1/playwright-sample-tests-javascript.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Testdino1/playwright-sample-tests-javascript/issues"
+  },
+  "homepage": "https://github.com/Testdino1/playwright-sample-tests-javascript#readme"
 }

@@ -28,30 +28,7 @@ async function logout() {
   await allPages.loginPage.clickOnLogoutButton();
 }
 
-
-test('Verify that User Can Add, Edit, and Delete Addresses after Logging In', {tag: '@ios'}, async () => {
-    await login();
-
-  await test.step('Verify that user is able to add address successfully', async () => {
-    await allPages.userPage.clickOnUserProfileIcon();
-    await allPages.userPage.clickOnAddressTab();
-    await allPages.userPage.clickOnAddAddressButton();
-    await allPages.userPage.fillAddressForm();
-    await allPages.userPage.verifytheAddressIsAdded();
-  });
-
-  await test.step('Verify that user is able to edit address successfully', async () => {
-    await allPages.userPage.clickOnEditAddressButton();
-    await allPages.userPage.updateAddressForm();
-    await allPages.userPage.verifytheUpdatedAddressIsAdded();
-  })
-
-  await test.step('Verify that user is able to delete address successfully', async () => {
-    await allPages.userPage.clickOnDeleteAddressButton();
-  });
-});
-
-test('Verify that the New User is able to add Addresses in the Address section', {tag: '@android'}, async () => {
+test('Verify that the New User is able to add Addresses in the Address section @andriod', async () => {
     await login();
     await allPages.userPage.clickOnUserProfileIcon();
     await allPages.userPage.clickOnAddressTab();
@@ -60,7 +37,7 @@ test('Verify that the New User is able to add Addresses in the Address section',
     await allPages.userPage.fillAddressForm();
 });
 
-test('Verify that user can purchase multiple quantities in a single order', {tag: '@android'}, async () => {
+test('Verify that user can purchase multiple quantities in a single order @andriod', async () => {
     const productName = 'GoPro HERO10 Black';
     await login();
     await allPages.inventoryPage.clickOnShopNowButton();

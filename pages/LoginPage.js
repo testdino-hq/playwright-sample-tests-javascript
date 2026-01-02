@@ -53,7 +53,7 @@ class LoginPage extends BasePage{
       //  await this.page.waitForSelector(this.locators.logoutButton, { 
             // state: 'visible', 
             // timeout: 5000 
-        });
+        // });
     }
 
     async assertLoginPage() {

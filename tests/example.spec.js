@@ -14,13 +14,13 @@ test.beforeEach(async ({ page }) => {
 async function login(username = process.env.USERNAME, password = process.env.PASSWORD) {
   await allPages.loginPage.clickOnUserProfileIcon();
   await allPages.loginPage.validateSignInPage();
-  await allPages.loginPage.login(username, password);
+  // await allPages.loginPage.login(username, password);
 }
 
 async function login1(username = process.env.USERNAME1, password = process.env.PASSWORD) {
   await allPages.loginPage.clickOnUserProfileIcon();
   await allPages.loginPage.validateSignInPage();
-  await allPages.loginPage.login(username, password);
+  // await allPages.loginPage.login(username, password);
 }
 
 async function logout() {

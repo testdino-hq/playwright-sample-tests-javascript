@@ -2,7 +2,6 @@ import BasePage from './BasePage.js';
 import { expect } from '@playwright/test';
 
 class LoginPage extends BasePage{
-
   /**
    * @param {import('@playwright/test').Page} page
    */

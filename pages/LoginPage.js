@@ -50,8 +50,8 @@ class LoginPage extends BasePage{
         await this.page.locator(this.locators.userIcon).click();
         // Wait for dropdown menu to appear
       //  await this.page.waitForSelector(this.locators.logoutButton, { 
-            state: 'visible', 
-            timeout: 5000 
+            // state: 'visible', 
+            // timeout: 5000 
         });
     }
 

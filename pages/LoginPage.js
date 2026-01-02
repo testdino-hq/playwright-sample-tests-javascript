@@ -22,6 +22,7 @@ class LoginPage extends BasePage{
         successSignInMessage: `Logged in successfully`,
     }
 
+  
     async navigateToLoginPage() {
         await this.navigateTo('/');
     }

@@ -117,4 +117,3 @@ jobs:
            --token="${{ secrets.TESTDINO_TOKEN }}" \
            --upload-html \
            --upload-traces \
-           --verbose

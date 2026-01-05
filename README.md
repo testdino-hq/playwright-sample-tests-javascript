@@ -1,6 +1,7 @@
-# Ecommerce-demo-test-playwright
 
-Automated end-to-end tests for Ecommerce Demo store using [Playwright](https://playwright.dev/).
+# Ecommerce demo store - Playwright (javascript) tests
+
+Automated end-to-end tests for Ecommerce demo store using [Playwright](https://playwright.dev/).
 
 ---
 

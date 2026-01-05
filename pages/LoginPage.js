@@ -2,7 +2,7 @@ import BasePage from './BasePage.js';
 import { expect } from '@playwright/test';
 
 class LoginPage extends BasePage{
-
+  
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -23,6 +23,7 @@ class LoginPage extends BasePage{
         successSignInMessage: `Logged in successfully`,
     }
 
+  
     async navigateToLoginPage() {
         await this.navigateTo('/');
     }
@@ -50,10 +51,10 @@ class LoginPage extends BasePage{
     async clickOnUserProfileIcon() {
         await this.page.locator(this.locators.userIcon).click();
         // Wait for dropdown menu to appear
-        await this.page.waitForSelector(this.locators.logoutButton, { 
-            state: 'visible', 
-            timeout: 5000 
-        });
+      //  await this.page.waitForSelector(this.locators.logoutButton, { 
+            // state: 'visible', 
+            // timeout: 5000 
+        // });
     }
 
     async assertLoginPage() {

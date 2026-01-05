@@ -256,7 +256,6 @@ test('Verify that user add product to cart before logging in and then complete o
     await allPages.checkoutPage.verifyCashOnDeliverySelected();
     await allPages.checkoutPage.clickOnPlaceOrder();
     await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-})
 });
 
 test('Verify that user can filter products by price range', {tag: '@firefox'}, async () => {

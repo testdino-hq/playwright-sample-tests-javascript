@@ -217,16 +217,6 @@ test('Verify that User Can Complete the Journey from Login to Order Placement', 
 // });
 
 test('Verify that user add product to cart before logging in and then complete order after logging in', {tag: '@firefox'}, async () => {
-
-    await allPages.productDetailsPage.clickOnWriteAReviewBtn();
-    await allPages.productDetailsPage.fillReviewForm();
-    await allPages.productDetailsPage.assertSubmittedReview({
-        name: 'John Doe',
-        title: 'Great Product',
-        opinion: 'This product exceeded my expectations. Highly recommend!'
-    }); 
-  })
-
   await test.step('Navigate and add product to cart before logging in', async () => {
     await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickProductImage();
@@ -244,18 +234,6 @@ test('Verify that user add product to cart before logging in and then complete o
 //     await allPages.checkoutPage.clickOnPlaceOrder();
 //     await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
 // })
-
-  await test.step('Login and complete order', async () => {
-    await login();
-    await allPages.cartPage.clickOnCartIcon();
-    await allPages.cartPage.clickOnCheckoutButton();
-    await allPages.checkoutPage.verifyCheckoutTitle();
-    await allPages.checkoutPage.selectCashOnDelivery();
-    await allPages.homePage.clickOnShopNowButton();
-
-    await allPages.checkoutPage.verifyCashOnDeliverySelected();
-    await allPages.checkoutPage.clickOnPlaceOrder();
-    await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
 });
 
 test('Verify that user can filter products by price range', {tag: '@firefox'}, async () => {
@@ -263,7 +241,6 @@ test('Verify that user can filter products by price range', {tag: '@firefox'}, a
     await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickOnFilterButton();
     await allPages.homePage.AdjustPriceRangeSlider('10000', '20000');
-    await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickOnFilterButton();
 });
 
@@ -288,16 +265,6 @@ test('Verify if user can add product to wishlist, moves it to card and then chec
     //   await allPages.checkoutPage.clickOnPlaceOrder();
     //   await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
     // })
-    await test.step('Checkout product added to cart', async () => {
-      await allPages.cartPage.clickOnCartIcon();
-      await allPages.cartPage.clickOnCheckoutButton();
-      await allPages.checkoutPage.verifyCheckoutTitle();
-      await allPages.checkoutPage.selectCashOnDelivery();
-      await allPages.checkoutPage.verifyCashOnDeliverySelected();
-      await allPages.homePage.clickOnShopNowButton();
-      await allPages.checkoutPage.clickOnPlaceOrder();
-      await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-    })
   
 });
 

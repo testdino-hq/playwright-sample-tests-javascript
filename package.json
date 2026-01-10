@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.1",
-    "playwright": "^1.55.0"
+    "playwright": "^1.55.0",
+    "testdino-mcp": "^1.0.1"
   }
 }

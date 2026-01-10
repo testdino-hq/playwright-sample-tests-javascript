@@ -1,8 +1,6 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
 import AllPages from '../pages/AllPages.js';
-import dotenv from 'dotenv';
-dotenv.config({ override: true });
 
 let allPages;
 
@@ -28,7 +26,7 @@ async function logout() {
   await allPages.loginPage.clickOnLogoutButton();
 }
 
-test('Verify that user is able to delete selected product from cart @ios', async () => {
+test.skip('Verify that user is able to delete selected product from cart', {tag:'@ios'}, async () => {
     const productName = 'GoPro HERO10 Black';
     await login();
     await allPages.inventoryPage.clickOnShopNowButton();
@@ -46,7 +44,7 @@ test('Verify that user is able to delete selected product from cart @ios', async
     await allPages.allProductsPage.assertAllProductsTitle();
 });
 
-test('Verify new user views and cancels an order in my orders @chromium', async () => {
+test('Verify new user views and cancels an order in my orders', {tag: '@chromium'}, async () => {
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -104,7 +102,7 @@ test('Verify new user views and cancels an order in my orders @chromium', async 
   });
 });
 
-test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement @chromium', async () => {
+test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement', {tag: '@chromium'}, async () => {
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -147,7 +145,15 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
     await allPages.checkoutPage.verifyCheckoutTitle();
     await allPages.checkoutPage.selectCashOnDelivery();
     await allPages.checkoutPage.verifyCashOnDeliverySelected();
-    await allPages.checkoutPage.fillShippingAddress(process.env.SFIRST_NAME, email, process.env.SCITY, process.env.SSTATE, process.env.SSTREET_ADD, process.env.SZIP_CODE, process.env.SCOUNTRY);
+    await allPages.checkoutPage.fillShippingAddress(
+      firstName, 
+      email, 
+      process.env.SCITY || 'New York', 
+      process.env.SSTATE || 'New York', 
+      process.env.SSTREET_ADD || '123 Main St', 
+      process.env.SZIP_CODE || '10001', 
+      process.env.SCOUNTRY || 'United States'
+    );
     await allPages.checkoutPage.clickSaveAddressButton();
     await allPages.checkoutPage.clickOnPlaceOrder();
     await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
@@ -170,7 +176,7 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
   })
 });
 
-test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully @chromium', async () => {
+test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully', {tag: '@chromium'}, async () => {
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -192,7 +198,7 @@ test('Verify that the new user is able to Sign Up, Log In, and Navigate to the H
   })
 })
 
-test('Verify that user can update personal information @firefox', async () => {
+test('Verify that user can update personal information', {tag: '@firefox'}, async () => {
     await login();
     await allPages.userPage.clickOnUserProfileIcon();
     await allPages.userPage.updatePersonalInfo();

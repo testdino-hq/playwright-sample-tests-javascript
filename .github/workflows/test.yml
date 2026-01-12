@@ -49,17 +49,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install deps + browsers
         run: |
           npm ci
           npx playwright install --with-deps chromium firefox webkit
-
       - name: List Playwright projects (debug)
         run: npx playwright list --projects | cat
 
       - name: Run shard ${{ matrix.shardIndex }} 
-        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios|@api" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
@@ -90,12 +88,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install deps + browsers
         run: |
           npm ci
           npx playwright install --with-deps
-
       - name: Download all blob reports
         uses: actions/download-artifact@v4
         with:

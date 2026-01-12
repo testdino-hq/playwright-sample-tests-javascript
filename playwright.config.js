@@ -55,5 +55,11 @@ export default defineConfig({
       use: { ...devices['iPhone 12'] },
       grep: /@ios/, // only run tests tagged @ios
     },
+
+    {
+      name: 'api',
+      use: { ...devices['API'] },
+      grep: /@api/, // only run tests tagged @api
+    },
   ],
 });

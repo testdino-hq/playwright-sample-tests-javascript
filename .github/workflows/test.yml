@@ -57,29 +57,36 @@ jobs:
           SHARD_TOTAL: ${{ matrix.shardTotal }}
         run: |
           echo "GitHub run attempt: ${{ github.run_attempt }}"
+
+          mkdir -p ./playwright-report
+
           if [[ "${{ github.run_attempt }}" -gt 1 ]]; then
             echo "Detected re-run. Checking failed test metadata from TestDino."
+
             npx tdpw last-failed \
               --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
               > last-failed-flags.txt
+
             EXTRA_PW_FLAGS="$(cat last-failed-flags.txt)"
+
             if [[ -n "$EXTRA_PW_FLAGS" ]]; then
               echo "Running only failed tests for this shard:"
               echo "$EXTRA_PW_FLAGS"
-              # IMPORTANT: JSON + BLOB BOTH REQUIRED
-              # Ensure playwright-report directory exists
-              mkdir -p ./playwright-report
-              eval "npx playwright test $EXTRA_PW_FLAGS"
+
+              # ⚠️ DO NOT add --grep here
+              eval "npx playwright test $EXTRA_PW_FLAGS --reporter=blob"
               exit 0
             fi
-            echo "No failed test metadata found. Falling back to full shard."
+
+            echo "No failed tests for this shard. Skipping execution."
+            exit 0
           fi
-          # First run (full shard)
-          # Ensure playwright-report directory exists
-          mkdir -p ./playwright-report
+
+          # First run (full shard, NO grep)
           npx playwright test \
-            --grep="@chromium|@firefox|@webkit" \
-            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} || exit 1
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+            --reporter=blob || exit 1
+
       - name: Upload blob report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4

@@ -20,12 +20,6 @@ async function login(
   // await allPages.loginPage.login(username, password);
 }
 
-function failOnlyOnFirstAttempt(testInfo, message) {
-  if (testInfo.retry === 0) {
-    throw new Error(message);
-  }
-}
-
 /* ---------- DEMO FLAKY TEST ---------- */
 
 test(
@@ -33,11 +27,8 @@ test(
   {tag: '@chromium'},
   async () => {
     await login();
-
-    // Fail ONLY on first GitHub run
-    if (process.env.GITHUB_RUN_ATTEMPT === '1') {
-      throw new Error('Intentional failure to demonstrate rerun of failed tests');
-    }
+    // Intentionally failing test (no flaky/retry behavior)
+    throw new Error('Intentional permanent failure: login/logout test');
   }
 );
 
@@ -155,13 +146,8 @@ test(
   { tag: '@firefox' },
   async () => {
     await login();
-
-    // ❌ Fail ONLY on first GitHub run
-    if (process.env.GITHUB_RUN_ATTEMPT === '1') {
-      throw new Error(
-        'Intentional failure: search test (demo rerun)'
-      );
-    }
+    // Intentionally failing test (no flaky/retry behavior)
+    throw new Error('Intentional permanent failure: search test');
 
     // ✅ Pass on rerun
     // await allPages.homePage.clickOnShopNowButton();
@@ -193,13 +179,8 @@ test(
   { tag: '@webkit' },
   async () => {
     await login();
-
-    // ❌ Fail ONLY on first GitHub run
-    if (process.env.GITHUB_RUN_ATTEMPT === '1') {
-      throw new Error(
-        'Intentional failure: category navigation test (demo rerun)'
-      );
-    }
+    // Intentionally failing test (no flaky/retry behavior)
+    throw new Error('Intentional permanent failure: category navigation test');
 
     // ✅ Pass on rerun
     // await allPages.homePage.clickAllProductsNav();

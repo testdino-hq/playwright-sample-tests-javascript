@@ -47,6 +47,12 @@ test.describe('DELETE User API', () => {
   });
 
   test('Remove non-existing user returns 200 @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const nonExistingUserId = 999999;
     const response = await request.delete(`${API_BASE_URL}${USERS_ENDPOINT}/${nonExistingUserId}`);
     

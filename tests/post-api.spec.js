@@ -9,6 +9,12 @@ const ADD_ENDPOINT = '/users/add';
 test.describe('POST Create User API', () => {
   
   test('Create a new user @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const userData = {
       firstName: 'John',
       lastName: 'Doe',
@@ -28,6 +34,12 @@ test.describe('POST Create User API', () => {
   });
 
   test('Create user with extra fields @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const userData = {
       firstName: 'Jane',
       lastName: 'Smith',
@@ -50,6 +62,12 @@ test.describe('POST Create User API', () => {
   });
 
   test('Create user without any fields @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const response = await request.post(`${API_BASE_URL}${ADD_ENDPOINT}`, {
       data: {}
     });
@@ -61,6 +79,12 @@ test.describe('POST Create User API', () => {
   });
 
   test('Validate response has createdAt timestamp (simulated) @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const userData = {
       firstName: 'Test',
       lastName: 'User',
@@ -86,6 +110,12 @@ test.describe('POST Create User API', () => {
   });
 
   test('Validate created user has id @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const userData = {
       firstName: 'Alice',
       lastName: 'Johnson',
@@ -105,6 +135,12 @@ test.describe('POST Create User API', () => {
   });
 
   test('Validate server echoes fields @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const userData = {
       firstName: 'Bob',
       lastName: 'Williams',
@@ -184,6 +220,12 @@ test.describe('POST Create User API', () => {
   });
 
   test('Rate-limit simulation - quick repeated calls @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const userData = {
       firstName: 'Rate',
       lastName: 'Test',

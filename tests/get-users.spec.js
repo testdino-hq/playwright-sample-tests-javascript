@@ -125,6 +125,12 @@ test.describe('GET Users API', () => {
   });
 
   test('page boundaries - limit=0 returns empty @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}?limit=0`);
     
     expect(response.status()).toBe(200);
@@ -149,6 +155,12 @@ test.describe('GET Users API', () => {
   });
 
   test('delayed response (3s) should return 200 @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     // Some APIs support delay parameter for testing
     const delay = 3;
     const startTime = Date.now();

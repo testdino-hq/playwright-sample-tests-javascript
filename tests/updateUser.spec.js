@@ -41,6 +41,12 @@ test.describe('PUT / PATCH Update User API', () => {
   });
 
   test('Update non-existing user still returns 200 @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const nonExistingUserId = 999999;
     const updateData = {
       firstName: 'Test',
@@ -120,6 +126,12 @@ test.describe('PUT / PATCH Update User API', () => {
   });
 
   test('Login success (valid creds) @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const loginData = {
       username: 'kminchelle',
       password: '0lelplR'
@@ -168,6 +180,12 @@ test.describe('PUT / PATCH Update User API', () => {
   });
 
   test('Login returns expected username in response when success @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const loginData = {
       username: 'kminchelle',
       password: '0lelplR'
@@ -189,6 +207,12 @@ test.describe('PUT / PATCH Update User API', () => {
   });
 
   test('Login token length sanity check @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const loginData = {
       username: 'kminchelle',
       password: '0lelplR'
@@ -212,6 +236,12 @@ test.describe('PUT / PATCH Update User API', () => {
   });
 
   test('Login headers present in response (server may add CORS headers) @api', async ({ request }) => {
+    // Flaky test: fail on first run, pass on retry
+    const isRetry = test.info().retry > 0;
+    if (!isRetry) {
+      expect(true).toBe(false); // Force failure on first run
+    }
+    
     const loginData = {
       username: 'kminchelle',
       password: '0lelplR'

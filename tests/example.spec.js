@@ -1,9 +1,6 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
 import AllPages from '../pages/AllPages.js';
-import dotenv from 'dotenv';
-
-dotenv.config({ override: true });
 
 let allPages;
 
@@ -33,6 +30,7 @@ function failOnlyOnFirstAttempt(testInfo, message) {
 
 test(
   'Verify that user can login and logout successfully',
+  {tag: '@chromium'},
   async () => {
     await login();
 

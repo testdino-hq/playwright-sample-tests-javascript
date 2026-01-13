@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
+dotenv.config({ quiet: true });
 const isCI = !!process.env.CI;
 
 export default defineConfig({
@@ -9,23 +11,22 @@ export default defineConfig({
   forbidOnly: isCI,
   retries: isCI ? 0 : 0,
   workers: isCI ? 1 : 1,
+  
 
-  timeout: 60 * 1000, // ⏱️ each test fails after 1 min
-  // In CI we only show a list reporter. The workflow sets --reporter=blob.
-  // Locally you also get HTML and JSON.
+  timeout: 30 * 1000,
   reporter: [
     ['html', {
       outputFolder: 'playwright-report',
       open: 'never'
     }],
-    ['blob', { outputDir: 'blob-report' }], // Use blob reporter
+    ['blob', { outputDir: 'blob-report' }], // Blob reporter for merging
     ['json', { outputFile: './playwright-report/report.json' }],
   ],
 
   use: {
     baseURL: 'https://demo.alphabin.co/',
     headless: true,
-    trace: 'retain-on-failure',
+    trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
@@ -34,6 +35,17 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      grep: /@chromium/, // only run tests tagged @chromium
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+      grep: /@firefox/, // only run tests tagged @firefox
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+      grep: /@webkit/, // only run tests tagged @webkit
     },
   ],
 });

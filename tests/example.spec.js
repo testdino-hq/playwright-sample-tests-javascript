@@ -100,7 +100,7 @@ test(
 );
 
 test(
-  'Verify that all the navbar are working properlys',
+  'Verify that all the navbar are working properly (Navbar)',
   { tag: '@webkit' },
   async () => {
     await login();
@@ -109,7 +109,7 @@ test(
 );
 
 test(
-  'Verify that user can edit and delete a product reviews',
+  'Verify that user can edit and delete a product review (Single review)',
   { tag: '@chromium' },
   async () => {
     await login();
@@ -118,7 +118,7 @@ test(
 );
 
 test(
-  'Verify that User Can Complete the Journey from Login to Order Placements',
+  'Verify that User Can Complete the Journey from Login to Order Placement (Single order)',
   { tag: '@chromium' },
   async () => {
     await login();
@@ -127,7 +127,7 @@ test(
 );
 
 test(
-  'Verify that user can filter products by price ranges',
+  'Verify that user can filter products by price range (Price page',
   { tag: '@firefox' },
   async () => {
     await expect(true).toBeTruthy();
@@ -135,7 +135,7 @@ test(
 );
 
 test(
-  'Verify if user can add product to wishlist, move to cart and checkout page',
+  'Verify if user can add product to wishlist, move to cart(Checkout page)',
   { tag: '@firefox' },
   async () => {
     await login();
@@ -144,7 +144,7 @@ test(
 );
 
 test(
-  'Verify that user is able to submit a product reviews',
+  'Verify that user is able to submit a product review (Review)',
   { tag: '@webkit' },
   async () => {
     await login();
@@ -153,7 +153,7 @@ test(
 );
 
 test(
-  'User searches products and views results',
+  'User searches products and views result (Searchbox)',
   { tag: '@firefox' },
   async () => {
     await login();
@@ -191,7 +191,7 @@ test(
 );
 
 test(
-  'User navigates through product categories',
+  'User navigates through product categories (Product page)',
   { tag: '@webkit' },
   async () => {
     await login();
@@ -214,7 +214,7 @@ test(
 
 
 test(
-  'Verify that user can view order history and order details',
+  'Verify that user can view order history and order detail (Order page)',
   { tag: '@firefox' },
   async () => {
     await login();
@@ -228,7 +228,7 @@ test(
 );
 
 test(
-  'Verify that user can update cart quantity and verify total prices',
+  'Verify that user can update cart quantity and verify total price (Pricing)',
   { tag: '@chromium' },
   async () => {
     await login();
@@ -243,7 +243,7 @@ test(
 );
 
 test(
-  'Verify that user can view order history and order details properly',
+  'Verify that user can view order history and order details properly (Order details)',
   { tag: '@firefox' },
   async () => {
     await login();
@@ -257,7 +257,7 @@ test(
 );
 
 test(
-  'Verify that users can update cart quantity and verify total prices',
+  'Verify that users can update cart quantity and verify total price (Single order)',
   { tag: '@chromium' },
   async () => {
     await login();
@@ -272,7 +272,7 @@ test(
 );
 
 test(
-  'Verify that users can view order history and order details properly',
+  'Verify that users can view order history and order details properly (Order history)',
   { tag: '@firefox' },
   async () => {
     await login();

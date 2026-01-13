@@ -79,7 +79,7 @@ jobs:
           mkdir -p ./playwright-report
           npx playwright test \
             --grep="@chromium|@firefox|@webkit" \
-            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} || exit 1
       - name: Upload blob report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4

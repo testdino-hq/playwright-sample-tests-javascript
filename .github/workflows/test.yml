@@ -38,6 +38,7 @@ jobs:
           echo "STATE=${{ secrets.STATE }}" >> .env
           echo "COUNTRY=${{ secrets.COUNTRY }}" >> .env
           echo "ZIP_CODE=${{ secrets.ZIP_CODE }}" >> .env
+
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -45,10 +46,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: Install deps + browsers
         run: |
           npm ci
           npx playwright install --with-deps chromium firefox webkit
+
       # ✅ FULL + RERUN LOGIC
       - name: Run Playwright (rerun failed tests if applicable)
         env:
@@ -80,6 +83,7 @@ jobs:
           npx playwright test \
             --grep="@chromium|@firefox|@webkit" \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
       - name: Upload blob report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4

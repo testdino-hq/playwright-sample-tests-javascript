@@ -1,5 +1,9 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
 
 const isCI = !!process.env.CI;
 
@@ -12,6 +16,10 @@ export default defineConfig({
   workers: isCI ? 5 : 5,
 
   timeout: 60 * 1000,
+  expect: {
+    timeout: 10 * 1000,
+  },
+  
   reporter: [
     ['html', {
       outputFolder: 'playwright-report',
@@ -27,6 +35,8 @@ export default defineConfig({
     trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    actionTimeout: 15 * 1000,
+    navigationTimeout: 30 * 1000,
   },
 
   projects: [

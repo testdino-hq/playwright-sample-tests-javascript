@@ -1,7 +1,15 @@
 {
   "name": "playwright-js-framework",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install --with-deps",
+    "verify": "node verify-setup.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +21,6 @@
   "dependencies": {
     "@testdino/playwright": "file:testdino-playwright-1.0.0.tgz",
     "dotenv": "^17.2.1",
-    "playwright": "^1.55.0"
+    "playwright": "^1.55.1"
   }
 }

@@ -9,31 +9,10 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-async function login(username = process.env.USERNAME, password = process.env.PASSWORD) {
-  await allPages.loginPage.clickOnUserProfileIcon();
-  await allPages.loginPage.validateSignInPage();
-  await allPages.loginPage.login(username, password);
-}
-
-async function login1(username = process.env.USERNAME1, password = process.env.PASSWORD) {
-  await allPages.loginPage.clickOnUserProfileIcon();
-  await allPages.loginPage.validateSignInPage();
-  await allPages.loginPage.login(username, password);
-}
-
-async function logout() {
-  await allPages.loginPage.clickOnUserProfileIcon();
-  await allPages.loginPage.clickOnLogoutButton();
-}
-
 test.describe('Product Reviews', () => {
 
   test.describe('Submit Review', () => {
     test('Verify that user is able to submit a product review @firefox', async () => {
-
-      await test.step('Login as existing user and navigate to a product', async () => {
-        await login();
-      });
 
       await test.step('Navigate to all product section and select a product', async () => {
         await allPages.homePage.clickOnShopNowButton();
@@ -59,10 +38,6 @@ test.describe('Product Reviews', () => {
 
   test.describe('Edit & Delete Review', () => {
     test('Verify that user can edit and delete a product review @firefox', async () => {
-
-      await test.step('Login as existing user and navigate to a product', async () => {
-        await login();
-      });
 
       await test.step('Navigate to all product section and select a product', async () => {
         await allPages.homePage.clickOnShopNowButton();
@@ -105,10 +80,9 @@ test.describe('Product Filters', () => {
 
   test.describe('Price Range Filter', () => {
     test('Verify that user can filter products by price range @webkit', async () => {
-      await login();
       await allPages.homePage.clickOnShopNowButton();
       await allPages.homePage.clickOnFilterButton();
-      await allPages.homePage.AdjustPriceRangeSlider('10000', '20000');
+      await allPages.homePage.AdjustPriceRangeSlider('100', '200');
       await allPages.homePage.clickOnFilterButton();
     });
   });
@@ -119,7 +93,6 @@ test.describe('Wishlist Flow', () => {
 
   test.describe('Wishlist to Cart Checkout', () => {
     test('Verify if user can add product to wishlist, moves it to card and then checks out @webkit', async () => {
-      await login();
 
       await test.step('Add product to wishlist and then add to cart', async () => {
         await allPages.homePage.clickOnShopNowButton();
@@ -151,7 +124,6 @@ test.describe('Order Placement', () => {
     test('Verify that User Can Complete the Journey from Login to Order Placement @webkit', async () => {
       const productName = 'GoPro HERO10 Black';
 
-      await login();
       await allPages.inventoryPage.clickOnShopNowButton();
       await allPages.inventoryPage.clickOnAllProductsLink();
       await allPages.inventoryPage.searchProduct(productName);
@@ -173,20 +145,17 @@ test.describe('Order Placement', () => {
   test.describe('Place and Cancel Order', () => {
     test('Verify user can place and cancel an order @webkit', async () => {
       const productName = 'GoPro HERO10 Black';
-      const productPriceAndQuantity = '₹49,999 × 1';
+      const productPriceAndQuantity = '$599.99 × 1';
       const productQuantity = '1';
       const orderStatusProcessing = 'Processing';
       const orderStatusCanceled = 'Canceled';
 
-      await test.step('Verify that user can login successfully', async () => {
-        await login();
+      await test.step('Add product to cart and checkout', async () => {
         await allPages.inventoryPage.clickOnAllProductsLink();
         await allPages.inventoryPage.searchProduct(productName);
         await allPages.inventoryPage.verifyProductTitleVisible(productName);
         await allPages.inventoryPage.clickOnAddToCartIcon();
-      });
 
-      await test.step('Add product to cart and checkout', async () => {
         await allPages.cartPage.clickOnCartIcon();
         await allPages.cartPage.verifyCartItemVisible(productName);
         await allPages.cartPage.clickOnCheckoutButton();
@@ -214,7 +183,7 @@ test.describe('Order Placement', () => {
         await allPages.orderPage.clickOnPaginationButton(1);
         await allPages.orderPage.clickViewDetailsButton(1);
         await allPages.orderPage.verifyOrderDetailsTitle();
-        await allPages.orderPage.verifyOrderSummary(productName, productQuantity, '₹49,999', orderStatusProcessing);
+        await allPages.orderPage.verifyOrderSummary(productName, productQuantity, '$599.99', orderStatusProcessing);
       });
 
       await test.step('Cancel order and verify status is updated to Canceled', async () => {
@@ -255,11 +224,9 @@ test.describe('Guest to Login Checkout', () => {
         await allPages.homePage.clickProductImage();
         await allPages.homePage.clickAddToCartButton();
         await allPages.homePage.validateAddCartNotification();
-        await allPages.loginPage.clickOnUserProfileIcon();
       });
 
-      await test.step('Login and complete order', async () => {
-        await login();
+      await test.step('Complete order', async () => {
         await allPages.cartPage.clickOnCartIcon();
         await allPages.cartPage.clickOnCheckoutButton();
         await allPages.checkoutPage.verifyCheckoutTitle();

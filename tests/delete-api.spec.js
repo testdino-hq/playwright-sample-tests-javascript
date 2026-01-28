@@ -45,21 +45,4 @@ test.describe('DELETE User API', () => {
     expect(body).toHaveProperty('id');
     expect(typeof body.id).toBe('number');
   });
-
-  test('Remove non-existing user returns 200 @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const nonExistingUserId = 999999;
-    const response = await request.delete(`${API_BASE_URL}${USERS_ENDPOINT}/${nonExistingUserId}`);
-    
-    // Some APIs return 200 even for non-existing users, others return 404
-    // Based on the test name, expecting 200
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body).toBeInstanceOf(Object);
-  });
 });

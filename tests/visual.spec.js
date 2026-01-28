@@ -6,7 +6,7 @@ let allPages;
 
 test.beforeEach(async ({ page }) => {
   allPages = new AllPages(page);
-  await page.goto('/');
+  await page.goto('https://github.com/login');
 });
 
 test.describe('Visual Comparison', () => {
@@ -18,8 +18,7 @@ test.describe('Visual Comparison', () => {
 
       await page.getByRole('textbox', { name: 'Username or email address' }).click();
       await page.getByRole('textbox', { name: 'Username or email address' }).fill('test');
-      await expect(page).toHaveScreenshot('github-login-filled.png');
+      await expect(page).toHaveScreenshot('github-login-changed.png');
     });
   });
-
 });

@@ -17,7 +17,7 @@ class HomePage extends BasePage{
             aboutUsNav: `//li[text()="About Us"]`,
             contactUsNav: `//li[text()="Contact Us"]`,
             allProductsNav: `//li[text()="All Products"]`,
-            showNowButton: `//a[@href="/products"]/button[text()="Shop Now"]`,
+            showNowButton: `hero-shop-now`,
             ProductImage: `img[src="/products/Speaker.png"][alt="JBL Charge 4 Bluetooth Speaker"]`,
             addToCartButton: `[data-testid="add-to-cart-button"]`,
             AddCartNotification: `div[role="status"][aria-live="polite"]:has-text("Added to the cart")`,

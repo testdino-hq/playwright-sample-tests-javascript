@@ -13,6 +13,7 @@ class HomePage extends BasePage{
 
     locators = {
         navbar: {
+            
             homeNav: `//li[text()="Home"]`,
             aboutUsNav: `//li[text()="About Us"]`,
             contactUsNav: `//li[text()="Contact Us"]`,

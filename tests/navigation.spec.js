@@ -18,6 +18,7 @@ test.describe('Navigation Module', () => {
       await allPages.allProductsPage.assertAllProductsTitle();
       await allPages.homePage.clickOnContactUsLink();
       await allPages.contactUsPage.assertContactUsTitle();
+      
       await allPages.homePage.clickAboutUsNav();
       await allPages.homePage.assertAboutUsTitle();
     });

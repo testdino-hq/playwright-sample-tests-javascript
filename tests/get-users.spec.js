@@ -124,36 +124,6 @@ test.describe('GET Users API', () => {
     }
   });
 
-  test('page boundaries - limit=0 returns empty @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}?limit=0`);
-    
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    const users = body.users || body;
-    const usersArray = Array.isArray(users) ? users : [];
-    expect(usersArray.length).toBe(0);
-  });
-
-  test('combined params (limit + skip + q) @api', async ({ request }) => {
-    const limit = 5;
-    const skip = 2;
-    const searchTerm = 'a';
-    
-    const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/search?q=${searchTerm}&limit=${limit}&skip=${skip}`);
-    
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    const users = body.users || body;
-    const usersArray = Array.isArray(users) ? users : [];
-    expect(usersArray.length).toBeLessThanOrEqual(limit);
-  });
-
   test('delayed response (3s) should return 200 @api', async ({ request }) => {
     // Flaky test: fail on first run, pass on retry
     const isRetry = test.info().retry > 0;

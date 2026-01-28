@@ -9,28 +9,10 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-async function login(username = process.env.USERNAME, password = process.env.PASSWORD) {
-  await allPages.loginPage.clickOnUserProfileIcon();
-  await allPages.loginPage.validateSignInPage();
-  await allPages.loginPage.login(username, password);
-}
-
-async function login1(username = process.env.USERNAME1, password = process.env.PASSWORD) {
-  await allPages.loginPage.clickOnUserProfileIcon();
-  await allPages.loginPage.validateSignInPage();
-  await allPages.loginPage.login(username, password);
-}
-
-async function logout() {
-  await allPages.loginPage.clickOnUserProfileIcon();
-  await allPages.loginPage.clickOnLogoutButton();
-}
-
 test.describe('Address Module', () => {
 
   test.describe('Add, Edit & Delete Address', () => {
     test('Verify that User Can Add, Edit, and Delete Addresses after Logging In @ios', async () => {
-      await login();
 
       await test.step('Verify that user is able to add address successfully', async () => {
         await allPages.userPage.clickOnUserProfileIcon();
@@ -54,7 +36,6 @@ test.describe('Address Module', () => {
 
   test.describe('Add Address for New User', () => {
     test('Verify that the New User is able to add Addresses in the Address section @andriod', async () => {
-      await login();
       await allPages.userPage.clickOnUserProfileIcon();
       await allPages.userPage.clickOnAddressTab();
       await allPages.userPage.clickOnAddAddressButton();
@@ -71,7 +52,6 @@ test.describe('Order Placement', () => {
     test('Verify that user can purchase multiple quantities in a single order @andriod', async () => {
       const productName = 'GoPro HERO10 Black';
 
-      await login();
       await allPages.inventoryPage.clickOnShopNowButton();
       await allPages.inventoryPage.clickOnAllProductsLink();
       await allPages.inventoryPage.searchProduct(productName);

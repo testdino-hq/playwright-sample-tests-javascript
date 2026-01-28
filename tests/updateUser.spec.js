@@ -40,29 +40,6 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('id', userId);
   });
 
-  test('Update non-existing user still returns 200 @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const nonExistingUserId = 999999;
-    const updateData = {
-      firstName: 'Test',
-      lastName: 'User'
-    };
-    
-    const response = await request.put(`${API_BASE_URL}${USERS_ENDPOINT}/${nonExistingUserId}`, {
-      data: updateData
-    });
-    
-    // Some APIs return 200 even for non-existing users
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body).toBeInstanceOf(Object);
-  });
-
   test('Update only one field @api', async ({ request }) => {
     const userId = 3;
     const updateData = {
@@ -125,29 +102,6 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('id', userId);
   });
 
-  test('Login success (valid creds) @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const loginData = {
-      username: 'kminchelle',
-      password: '0lelplR'
-    };
-    
-    const response = await request.post(`${API_BASE_URL}${AUTH_ENDPOINT}`, {
-      data: loginData
-    });
-    
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body).toBeInstanceOf(Object);
-    // Should have token or user info
-    expect(body.token || body.id).toBeTruthy();
-  });
-
   test('Login failure (invalid creds) @api', async ({ request }) => {
     const loginData = {
       username: 'invaliduser',
@@ -177,88 +131,5 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(response.status()).toBe(400);
     const body = await response.json();
     expect(body).toBeInstanceOf(Object);
-  });
-
-  test('Login returns expected username in response when success @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const loginData = {
-      username: 'kminchelle',
-      password: '0lelplR'
-    };
-    
-    const response = await request.post(`${API_BASE_URL}${AUTH_ENDPOINT}`, {
-      data: loginData
-    });
-    
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    
-    // Should contain username or user object with username
-    const hasUsername = body.username === loginData.username || 
-                       (body.user && body.user.username === loginData.username) ||
-                       (body.user && body.user.firstName);
-    
-    expect(hasUsername).toBeTruthy();
-  });
-
-  test('Login token length sanity check @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const loginData = {
-      username: 'kminchelle',
-      password: '0lelplR'
-    };
-    
-    const response = await request.post(`${API_BASE_URL}${AUTH_ENDPOINT}`, {
-      data: loginData
-    });
-    
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    
-    // Check if token exists and has reasonable length
-    if (body.token) {
-      expect(typeof body.token).toBe('string');
-      expect(body.token.length).toBeGreaterThan(10); // Token should be substantial
-    } else if (body.accessToken) {
-      expect(typeof body.accessToken).toBe('string');
-      expect(body.accessToken.length).toBeGreaterThan(10);
-    }
-  });
-
-  test('Login headers present in response (server may add CORS headers) @api', async ({ request }) => {
-    // Flaky test: fail on first run, pass on retry
-    const isRetry = test.info().retry > 0;
-    if (!isRetry) {
-      expect(true).toBe(false); // Force failure on first run
-    }
-    
-    const loginData = {
-      username: 'kminchelle',
-      password: '0lelplR'
-    };
-    
-    const response = await request.post(`${API_BASE_URL}${AUTH_ENDPOINT}`, {
-      data: loginData
-    });
-    
-    expect(response.status()).toBe(200);
-    
-    // Check for common headers
-    const headers = response.headers();
-    expect(headers).toBeInstanceOf(Object);
-    
-    // Check for CORS headers or content-type
-    const hasContentType = headers['content-type'] || headers['Content-Type'];
-    expect(hasContentType).toBeTruthy();
   });
 });

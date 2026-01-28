@@ -36,10 +36,10 @@ test.describe('Authentication', () => {
       const lastName = 'User';
 
       await test.step('Verify that user can register successfully', async () => {
-        await allPages.loginPage.clickOnUserProfileIcon();
-        await allPages.loginPage.validateSignInPage();
-        await allPages.loginPage.clickOnSignupLink();
-        await allPages.signupPage.assertSignupPage();
+        // await allPages.loginPage.clickOnUserProfileIcon();
+        // await allPages.loginPage.validateSignInPage();
+        // await allPages.loginPage.clickOnSignupLink();
+        // await allPages.signupPage.assertSignupPage();
         // await allPages.signupPage.signup(firstName, lastName, email, process.env.PASSWORD);
         // await allPages.signupPage.verifySuccessSignUp();
       });

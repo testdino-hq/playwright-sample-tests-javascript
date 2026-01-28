@@ -38,6 +38,21 @@ jobs:
           echo "STATE=${{ secrets.STATE }}" >> .env
           echo "COUNTRY=${{ secrets.COUNTRY }}" >> .env
           echo "ZIP_CODE=${{ secrets.ZIP_CODE }}" >> .env
+          echo "USERNAME1=${{ secrets.USERNAME1 }}" >> .env
+          echo "SFIRST_NAME=${{ secrets.SFIRST_NAME }}" >> .env
+          echo "SCITY=${{ secrets.SCITY }}" >> .env
+          echo "SSTATE=${{ secrets.SSTATE }}" >> .env
+          echo "SSTREET_ADD=${{ secrets.SSTREET_ADD }}" >> .env
+          echo "SZIP_CODE=${{ secrets.SZIP_CODE }}" >> .env
+          echo "SCOUNTRY=${{ secrets.SCOUNTRY }}" >> .env
+          
+      - name: Verify environment setup
+        run: |
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "Environment file created: $(ls -la .env)"
+          echo "Test directory exists: $(ls -la tests/)"
+          npm run verify
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -47,8 +62,12 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install deps + browsers
         run: |
+          echo "Installing npm dependencies..."
           npm ci
+          echo "Installing Playwright browsers..."
           npx playwright install --with-deps chromium firefox webkit
+          echo "Verifying Playwright installation..."
+          npx playwright --version
       # ✅ FULL + RERUN LOGIC
       - name: Run Playwright (rerun failed tests if applicable)
         env:

@@ -1,25 +1,17 @@
 {
   "name": "playwright-js-framework",
   "version": "1.0.0",
-  "scripts": {
-    "test": "playwright test",
-    "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug",
-    "report": "playwright show-report",
-    "install:browsers": "playwright install --with-deps",
-    "verify": "node verify-setup.js"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.55.1",
+    "@playwright/test": "^1.54.1",
     "@types/node": "^24.1.0"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
-    "playwright": "^1.55.1"
+    "playwright": "^1.55.0"
   }
 }

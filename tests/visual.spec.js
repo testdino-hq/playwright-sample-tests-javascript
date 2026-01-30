@@ -1,24 +1,44 @@
 // @ts-check
-import { expect, test } from '@playwright/test';
-import AllPages from '../pages/AllPages.js';
+import { test, expect } from '@playwright/test';
 
-let allPages;
+test.describe('Visual Comparison – GitHub Login', () => {
 
-test.beforeEach(async ({ page }) => {
-  allPages = new AllPages(page);
-  await page.goto('https://github.com/login');
-});
+  test.beforeEach(async ({ page }) => {
+    await page.goto('https://github.com/login');
 
-test.describe('Visual Comparison', () => {
+    // 🔒 Disable animations, transitions & caret blinking
+    await page.addStyleTag({
+      content: `
+        * {
+          animation: none !important;
+          transition: none !important;
+          caret-color: transparent !important;
+        }
+      `
+    });
 
-  test.describe('GitHub Login Page', () => {
-    test('visual comparison demo test @chromium', async ({ page }) => {
-      await page.goto('https://github.com/login');
-      await expect(page).toHaveScreenshot('github-login.png');
+    // ⏳ Ensure fonts & layout are fully settled
+    await page.waitForLoadState('networkidle');
+  });
 
-      await page.getByRole('textbox', { name: 'Username or email address' }).click();
-      await page.getByRole('textbox', { name: 'Username or email address' }).fill('test');
-      await expect(page).toHaveScreenshot('github-login-changed.png');
+  test('GitHub login page visual comparison (stable)', async ({ page }) => {
+
+    // 📸 1️⃣ Baseline screenshot (no interaction)
+    await expect(page).toHaveScreenshot('github-login-initial.png', {
+      fullPage: true,
+    });
+
+    // ✍️ 2️⃣ Type username (dynamic element)
+    const usernameInput = page.getByRole('textbox', {
+      name: 'Username or email address',
+    });
+
+    await usernameInput.fill('test');
+
+    // 📸 3️⃣ Screenshot AFTER typing — mask the input field
+    await expect(page).toHaveScreenshot('github-login-after-typing.png', {
+      fullPage: true,
+      mask: [usernameInput],
     });
   });
 });

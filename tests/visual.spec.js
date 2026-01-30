@@ -25,12 +25,15 @@ test.describe('Visual Comparison – GitHub Username Change', () => {
     const usernameInput = page.getByRole('textbox', {
       name: 'Username or email address',
     });
-    // ✍️ Now change the UI
+    
+    // Baseline – empty input
+    await expect(usernameInput).toHaveScreenshot('username-input.png');
+    
+    // Modify UI
     await usernameInput.fill('test');
-
-    // 📸 SAME screenshot name → Actual has "test"
-    await expect(page).toHaveScreenshot('github-login-username.png', {
-      fullPage: true,
+    
+    // Same screenshot name → visual diff
+    await expect(usernameInput).toHaveScreenshot('username-input.png');
+    
     });
   });
-});

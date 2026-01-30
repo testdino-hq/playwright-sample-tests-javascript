@@ -21,7 +21,7 @@ test.describe('Visual Comparison – GitHub Login', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('GitHub login page visual comparison (stable)', async ({ page }) => {
+  test('GitHub login page visual comparison (stable) @chromium', async ({ page }) => {
 
     // 📸 1️⃣ Baseline screenshot (no interaction)
     await expect(page).toHaveScreenshot('github-login-initial.png', {

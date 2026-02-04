@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Cart Module', () => {
   test.describe('Product Removal', () => {
-    test('Verify that user is able to delete selected product from cart @ios', async () => {
+    test('Verify that user is able to delete selected product from cart ',{tag: '@ios'}, async () => {
       const productName = 'GoPro HERO10 Black';
       await allPages.inventoryPage.clickOnAllProductsLink();
       await allPages.inventoryPage.searchProduct(productName);
@@ -31,7 +31,7 @@ test.describe('Cart Module', () => {
 
 test.describe('Orders Module', () => {
   test.describe('Order Cancellation', () => {
-    test('Verify new user views and cancels an order in my orders @chromium', async () => {
+    test('Verify new user views and cancels an order in my orders ',{tag: '@chromium'}, async () => {
       const email = `test+${Date.now()}@test.com`;
       const firstName = 'Test';
       const lastName = 'User';
@@ -84,7 +84,7 @@ test.describe('Orders Module', () => {
 
 test.describe('User Journey', () => {
   test.describe('Multiple Order Placement', () => {
-    test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement @chromium', async () => {
+    test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement ',{tag: '@chromium'}, async () => {
       const email = `test+${Date.now()}@test.com`;
       const firstName = 'Test';
       const lastName = 'User';
@@ -148,7 +148,7 @@ test.describe('User Journey', () => {
 
 test.describe('Authentication', () => {
   test.describe('Signup & Login', () => {
-    test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully @chromium', async () => {
+    test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully ',{tag: '@chromium'}, async () => {
       const email = `test+${Date.now()}@test.com`;
       const firstName = 'Test';
       const lastName = 'User';
@@ -170,7 +170,7 @@ test.describe('Authentication', () => {
 
 test.describe('User Profile', () => {
   test.describe('Personal Information', () => {
-    test('Verify that user can update personal information @firefox', async () => {
+    test('Verify that user can update personal information ',{tag: '@firefox'}, async () => {
       await allPages.userPage.clickOnUserProfileIcon();
       // await allPages.userPage.updatePersonalInfo();
       // await allPages.userPage.verifyPersonalInfoUpdated();

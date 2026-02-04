@@ -20,7 +20,7 @@ test.describe('Visual Comparison – GitHub Username Change', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('Visual Comparison @chromium', async ({ page }) => {
+  test('Visual Comparison ',{tag: '@chromium'}, async ({ page }) => {
 
     const usernameInput = page.getByRole('textbox', {
       name: 'Username or email address',

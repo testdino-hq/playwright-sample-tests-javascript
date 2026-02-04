@@ -8,7 +8,7 @@ const ADD_ENDPOINT = '/users/add';
 
 test.describe('POST Create User API', () => {
 
-  test('Bad endpoint returns 404 @api', async ({ request }) => {
+  test('Bad endpoint returns 404 ',{tag: '@api'}, async ({ request }) => {
     const userData = {
       firstName: 'Test',
       lastName: 'User'
@@ -21,7 +21,7 @@ test.describe('POST Create User API', () => {
     expect(response.status()).toBe(404);
   });
 
-  test('Invalid JSON payload handling @api', async ({ request }) => {
+  test('Invalid JSON payload handling ',{tag: '@api'}, async ({ request }) => {
     const response = await request.post(`${API_BASE_URL}${ADD_ENDPOINT}`, {
       data: 'invalid json string',
       headers: {
@@ -33,14 +33,14 @@ test.describe('POST Create User API', () => {
     expect([400, 422]).toContain(response.status());
   });
 
-  test('Too large ID param should return 404 @api', async ({ request }) => {
+  test('Too large ID param should return 404 ',{tag: '@api'}, async ({ request }) => {
     const tooLargeId = 999999999;
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/${tooLargeId}`);
     
     expect(response.status()).toBe(404);
   });
 
-  test('Deleting invalid id returns 200/response but not crash @api', async ({ request }) => {
+  test('Deleting invalid id returns 200/response but not crash ',{tag: '@api'}, async ({ request }) => {
     const invalidId = 999999;
     const response = await request.delete(`${API_BASE_URL}${USERS_ENDPOINT}/${invalidId}`);
     
@@ -50,7 +50,7 @@ test.describe('POST Create User API', () => {
     expect(body).toBeInstanceOf(Object);
   });
 
-  test('PUT: Invalid method usage returns appropriate response (no 500) @api', async ({ request }) => {
+  test('PUT: Invalid method usage returns appropriate response (no 500) ',{tag: '@api'}, async ({ request }) => {
     const userId = 1;
     const updateData = {
       firstName: 'Updated'
@@ -66,7 +66,7 @@ test.describe('POST Create User API', () => {
     expect(response.status()).not.toBe(500);
   });
 
-  test('user schema contains expected keys @api', async ({ request }) => {
+  test('user schema contains expected keys ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -79,7 +79,7 @@ test.describe('POST Create User API', () => {
     });
   });
 
-  test('users list contains objects with id and email @api', async ({ request }) => {
+  test('users list contains objects with id and email ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);

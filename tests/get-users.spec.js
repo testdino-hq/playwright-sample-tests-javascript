@@ -7,7 +7,7 @@ const USERS_ENDPOINT = '/users';
 
 test.describe('GET Users API', () => {
   
-  test('Fetch all users @api', async ({ request }) => {
+  test('Fetch all users ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);
@@ -16,7 +16,7 @@ test.describe('GET Users API', () => {
     expect(Array.isArray(body.users)).toBe(true);
   });
 
-  test('Fetch user by ID = 1 @api', async ({ request }) => {
+  test('Fetch user by ID = 1 ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -26,7 +26,7 @@ test.describe('GET Users API', () => {
     expect(body).toHaveProperty('lastName');
   });
 
-  test('Validate total users > 0 @api', async ({ request }) => {
+  test('Validate total users > 0 ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);
@@ -35,7 +35,7 @@ test.describe('GET Users API', () => {
     expect(body.total).toBeGreaterThan(0);
   });
 
-  test('Validate user image exists @api', async ({ request }) => {
+  test('Validate user image exists ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -45,7 +45,7 @@ test.describe('GET Users API', () => {
     expect(typeof body.image).toBe('string');
   });
 
-  test('Validate user 1 has firstName field @api', async ({ request }) => {
+  test('Validate user 1 has firstName field ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -55,13 +55,13 @@ test.describe('GET Users API', () => {
     expect(body.firstName.length).toBeGreaterThan(0);
   });
 
-  test('Invalid user ID returns 404 @api', async ({ request }) => {
+  test('Invalid user ID returns 404 ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/999999`);
     
     expect(response.status()).toBe(404);
   });
 
-  test('default users (no query) returns data object/array @api', async ({ request }) => {
+  test('default users (no query) returns data object/array ',{tag: '@api'}, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);
@@ -71,7 +71,7 @@ test.describe('GET Users API', () => {
     expect(body.users || Array.isArray(body)).toBeTruthy();
   });
 
-  test('limit param returns limited results @api', async ({ request }) => {
+  test('limit param returns limited results ',{tag: '@api'}, async ({ request }) => {
     const limit = 5;
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}?limit=${limit}`);
     
@@ -82,7 +82,7 @@ test.describe('GET Users API', () => {
     expect(usersArray.length).toBeLessThanOrEqual(limit);
   });
 
-  test('skip param shifts results @api', async ({ request }) => {
+  test('skip param shifts results ',{tag: '@api'}, async ({ request }) => {
     const skip = 5;
     const limit = 10;
     
@@ -107,7 +107,7 @@ test.describe('GET Users API', () => {
     }
   });
 
-  test('sorting / search query (if supported) returns filtered results @api', async ({ request }) => {
+  test('sorting / search query (if supported) returns filtered results ',{tag: '@api'}, async ({ request }) => {
     // Try search query parameter (common patterns: q, search, query)
     const searchTerm = 'john';
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/search?q=${searchTerm}`);
@@ -124,7 +124,7 @@ test.describe('GET Users API', () => {
     }
   });
 
-  test('delayed response (3s) should return 200 @api', async ({ request }) => {
+  test('delayed response (3s) should return 200 ',{tag: '@api'}, async ({ request }) => {
     // Flaky test: fail on first run, pass on retry
     const isRetry = test.info().retry > 0;
     if (!isRetry) {
@@ -150,7 +150,7 @@ test.describe('GET Users API', () => {
     expect(body).toBeInstanceOf(Object);
   });
 
-  test('enforce timeout (expect to fail if too slow) — set short timeout @api', async ({ request }) => {
+  test('enforce timeout (expect to fail if too slow) — set short timeout ',{tag: '@api'}   , async ({ request }) => {
     const delay = 5; // 5 second delay
     const shortTimeout = 2000; // 2 second timeout - should fail
     

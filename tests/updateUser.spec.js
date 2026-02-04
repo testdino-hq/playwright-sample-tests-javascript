@@ -8,7 +8,7 @@ const AUTH_ENDPOINT = '/auth/login';
 
 test.describe('PUT / PATCH Update User API', () => {
   
-  test('Update user details @api', async ({ request }) => {
+  test('Update user details ',{tag: '@api'}, async ({ request }) => {
     const userId = 1;
     const updateData = {
       firstName: 'John',
@@ -28,7 +28,7 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('lastName', updateData.lastName);
   });
 
-  test('Update user with empty payload @api', async ({ request }) => {
+  test('Update user with empty payload ',{tag: '@api'}, async ({ request }) => {
     const userId = 2;
     const response = await request.put(`${API_BASE_URL}${USERS_ENDPOINT}/${userId}`, {
       data: {}
@@ -40,7 +40,7 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('id', userId);
   });
 
-  test('Update only one field @api', async ({ request }) => {
+  test('Update only one field ',{tag: '@api'}, async ({ request }) => {
     const userId = 3;
     const updateData = {
       firstName: 'UpdatedFirstName'
@@ -57,7 +57,7 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('firstName', updateData.firstName);
   });
 
-  test('Validate returned name field @api', async ({ request }) => {
+  test('Validate returned name field ',{tag: '@api'}, async ({ request }) => {
     const userId = 4;
     const updateData = {
       firstName: 'Jane',
@@ -78,7 +78,7 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body.lastName).toBe(updateData.lastName);
   });
 
-  test('Update and validate response contains updatedAt simulation @api', async ({ request }) => {
+  test('Update and validate response contains updatedAt simulation ',{tag: '@api'}, async ({ request }) => {
     const userId = 5;
     const updateData = {
       firstName: 'Updated',
@@ -102,7 +102,7 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('id', userId);
   });
 
-  test('Login failure (invalid creds) @api', async ({ request }) => {
+  test('Login failure (invalid creds) ',{tag: '@api'}, async ({ request }) => {
     const loginData = {
       username: 'invaliduser',
       password: 'wrongpassword'
@@ -118,7 +118,7 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toBeInstanceOf(Object);
   });
 
-  test('Login missing fields returns 400 @api', async ({ request }) => {
+  test('Login missing fields returns 400 ',{tag: '@api'}, async ({ request }) => {
     // Missing password field
     const loginData = {
       username: 'kminchelle'

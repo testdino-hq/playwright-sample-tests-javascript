@@ -32,7 +32,7 @@ export default defineConfig({
   use: {
     baseURL: 'https://storedemo.testdino.com/products',
     headless: true,
-    trace: 'on',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 15 * 1000,

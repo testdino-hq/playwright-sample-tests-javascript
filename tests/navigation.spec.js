@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Navigation Module', () => {
   test.describe('Navbar Validation', () => {
-    test('Verify that all the navbar are working properly @firefox', async () => {
+    test('Verify that all the navbar are working properly ',{tag: '@firefox'}, async () => {
       await allPages.homePage.clickBackToHomeButton();
       // await allPages.homePage.assertHomePage();
       await allPages.homePage.clickAllProductsNav();
@@ -27,7 +27,7 @@ test.describe('Navigation Module', () => {
 
 test.describe('Contact Us Module', () => {
   test.describe('Contact Form Submission', () => {
-    test('Verify that user is able to fill Contact Us page successfully @firefox', async () => {
+    test('Verify that user is able to fill Contact Us page successfully ',{tag: '@firefox'}, async () => {
       await allPages.homePage.clickOnContactUsLink();
       await allPages.contactUsPage.assertContactUsTitle();
       await allPages.contactUsPage.fillContactUsForm();
@@ -38,7 +38,7 @@ test.describe('Contact Us Module', () => {
 
 test.describe('User Settings', () => {
   test.describe('Change Password Flow', () => {
-    test('Verify that user can change password successfully @ios', async () => {
+    test('Verify that user can change password successfully ',{tag: '@ios'}, async () => {
 
       await test.step('Change password and verify notification', async () => {
         await allPages.userPage.clickOnUserProfileIcon();

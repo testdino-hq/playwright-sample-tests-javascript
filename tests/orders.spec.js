@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 test.describe('Address Module', () => {
 
   test.describe('Add, Edit & Delete Address', () => {
-    test('Verify that User Can Add, Edit, and Delete Addresses after Logging In @ios', async () => {
+    test('Verify that User Can Add, Edit, and Delete Addresses after Logging In ',{tag: '@ios'}, async () => {
 
       await test.step('Verify that user is able to add address successfully', async () => {
         await allPages.userPage.clickOnUserProfileIcon();
@@ -35,7 +35,7 @@ test.describe('Address Module', () => {
   });
 
   test.describe('Add Address for New User', () => {
-    test('Verify that the New User is able to add Addresses in the Address section @andriod', async () => {
+    test('Verify that the New User is able to add Addresses in the Address section ',{tag: '@andriod'}, async () => {
       await allPages.userPage.clickOnUserProfileIcon();
       await allPages.userPage.clickOnAddressTab();
       await allPages.userPage.clickOnAddAddressButton();
@@ -49,7 +49,7 @@ test.describe('Address Module', () => {
 test.describe('Order Placement', () => {
 
   test.describe('Multiple Quantity Purchase', () => {
-    test('Verify that user can purchase multiple quantities in a single order @andriod', async () => {
+    test('Verify that user can purchase multiple quantities in a single order ',{tag: '@andriod'}, async () => {
       const productName = 'GoPro HERO10 Black';
 
       await allPages.inventoryPage.clickOnShopNowButton();

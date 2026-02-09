@@ -53,8 +53,9 @@ jobs:
         run: |
           npm ci
           npx playwright install --with-deps chromium firefox webkit
-      - name: List Playwright projects (debug)
-        run: npx playwright list --projects | cat
+          
+      # - name: List Playwright projects (debug)
+      #   run: npx playwright list --projects | cat
 
       # ✅ Run Playwright shard with TestDino 
       - name: Run Playwright shard with TestDino

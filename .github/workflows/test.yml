@@ -56,8 +56,14 @@ jobs:
       - name: List Playwright projects (debug)
         run: npx playwright list --projects | cat
 
-      - name: Run shard ${{ matrix.shardIndex }} 
-        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios|@api" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      # ✅ Run Playwright shard with TestDino 
+      - name: Run Playwright shard with TestDino
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+        run: |
+          npx tdpw test \
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+            --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
 
       - name: Upload blob report
         if: ${{ !cancelled() }}

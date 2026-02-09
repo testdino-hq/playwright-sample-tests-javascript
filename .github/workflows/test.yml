@@ -74,14 +74,16 @@ jobs:
           npm ci
           npm install --save-dev @testdino/playwright@latest
           npx playwright install --with-deps
-
-      - name: Run Playwright shard with TestDino Live
+          npx tdpw install --token="${{ secrets.TESTDINO_TOKEN }}"
+          
+      - name: Run Playwright shard with TestDino
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+          TESTDINO_SERVER_URL: https://staging-api.testdino.com
         run: |
-          npx tdpw test \
-            -t "${{ secrets.TESTDINO_TOKEN }}" \
+          npx playwright test \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
             --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
-            --verbose
 
       - name: Upload blob report
         if: ${{ !cancelled() }}

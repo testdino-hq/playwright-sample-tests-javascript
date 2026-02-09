@@ -201,14 +201,13 @@ jobs:
           npm install
           npm install --save-dev @testdino/playwright@latest
           npx playwright install --with-deps chromium firefox webkit
-          npx tdpw install --token="${{ secrets.TESTDINO_TOKEN }}"
 
       # ✅ Run Playwright shard with TestDino
       - name: Run Playwright shard with TestDino
         env:
           TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}        
         run: |
-          npx tdpw test \
+          npx playwright test \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
             --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
 

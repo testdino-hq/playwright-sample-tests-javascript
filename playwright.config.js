@@ -44,6 +44,32 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      grep: /@chromium/, // only run tests tagged @chromium
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+      grep: /@firefox/, // only run tests tagged @firefox
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+      grep: /@webkit/, // only run tests tagged @webkit
+    },
+    {
+      name: 'android',
+      use: { ...devices['Pixel 5'] },
+      grep: /@android/, // only run tests tagged @android
+    },
+    {
+      name: 'ios',
+      use: { ...devices['iPhone 14'] },
+      grep: /@ios/, // only run tests tagged @ios
+    },
+    {
+      name: 'api',
+      use: { ...devices['API'] },
+      grep: /@api/, // only run tests tagged @api
     },
   ],
 });

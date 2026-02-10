@@ -173,7 +173,7 @@ jobs:
         run: |
           npm install
           npm install --save-dev @testdino/playwright@latest
-          npx playwright install --with-deps chromium 
+          npx playwright install --with-deps chromium webkit firefox
 
       # ✅ Run Playwright shard with TestDino
       - name: Run Playwright shard with TestDino
@@ -182,7 +182,8 @@ jobs:
         run: |
           npx playwright test \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
-
+            --grep="@chromium|@firefox|@webkit|@android|@ios|@api" \
+            
       # ✅ Upload blob report (needed for merge)
       - name: Upload blob report
         if: ${{ !cancelled() }}

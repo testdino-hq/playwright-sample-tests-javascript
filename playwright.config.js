@@ -7,8 +7,8 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: isCI,
-  retries: isCI ? 1 : 0,
-  workers: isCI ? 1 : 1,
+  retries: isCI ? 1 : 1,
+  workers: isCI ? 5 : 5,
 
   timeout: 60 * 1000,
   reporter: [
@@ -16,14 +16,15 @@ export default defineConfig({
       outputFolder: 'playwright-report',
       open: 'never'
     }],
-    ['blob', { outputDir: 'blob-report' }], // Blob reporter for merging
+    ['blob', { outputDir: 'blob-report' }], 
     ['json', { outputFile: './playwright-report/report.json' }],
+    ['@testdino/playwright', { token: process.env.TESTDINO_TOKEN }],
   ],
 
   use: {
-    baseURL: 'https://demo.alphabin.co/',
-    headless: false,
-    trace: 'on-first-retry',
+    baseURL: 'https://storedemo.testdino.com/',
+    headless: true,
+    trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },

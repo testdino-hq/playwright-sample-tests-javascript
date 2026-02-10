@@ -1,14 +1,131 @@
-# .github/workflows/playwright-daily.yml
-# Runs Playwright test shards every day at **11 : 42 AM IST** (06 : 12 UTC)
-# plus anytime you trigger it manually from the Actions tab.
+# # .github/workflows/playwright-daily.yml
+# # Runs Playwright test shards every day at **11 : 42 AM IST** (06 : 12 UTC)
+# # plus anytime you trigger it manually from the Actions tab.
+
+# name: Run Playwright tests
+
+# on:
+#   push:          # runs on every push
+#   pull_request:  # runs on new PRs or PR updates
+#   schedule:
+#     - cron: '30 3 * * 1-5'
+#   workflow_dispatch:
+
+# jobs:
+#   run-tests:
+#     name: Run shard ${{ matrix.shardIndex }}/5
+#     runs-on: ubuntu-latest
+
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         shardIndex: [1,2,3,4,5] 
+#         shardTotal: [5]
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Setup Node.js 18.x
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+
+#       - name: Create .env file
+#         run: |
+#           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
+#           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+#           echo "NEW_PASSWORD=${{ secrets.NEW_PASSWORD }}" >> .env
+#           echo "FIRST_NAME=${{ secrets.FIRST_NAME }}" >> .env
+#           echo "STREET_NAME=${{ secrets.STREET_NAME }}" >> .env
+#           echo "CITY=${{ secrets.CITY }}" >> .env
+#           echo "STATE=${{ secrets.STATE }}" >> .env
+#           echo "COUNTRY=${{ secrets.COUNTRY }}" >> .env
+#           echo "ZIP_CODE=${{ secrets.ZIP_CODE }}" >> .env
+     
+#       - name: Cache npm dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.npm
+#           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-node-
+
+#       - name: Install deps + browsers
+#         run: |
+#           npm ci
+#           npx playwright install --with-deps chromium firefox webkit
+
+#       - name: List Playwright projects (debug)
+#         run: npx playwright list --projects | cat
+
+#       - name: Run shard ${{ matrix.shardIndex }} 
+#         run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+#       - name: Upload blob report
+#         if: ${{ !cancelled() }}
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: blob-report-${{ matrix.shardIndex }}
+#           path: ./blob-report
+#           retention-days: 1
+
+#   merge-reports:
+#     name: Merge Reports
+#     needs: run-tests
+#     if: always()             # run even if some shards fail
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Setup Node.js 18.x
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+
+#       - name: Cache npm dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.npm
+#           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-node-
+
+#       - name: Install deps + browsers
+#         run: |
+#           npm ci
+#           npx playwright install --with-deps
+
+#       - name: Download all blob reports
+#         uses: actions/download-artifact@v4
+#         with:
+#           path: ./all-blob-reports
+#           pattern: blob-report-*
+#           merge-multiple: true
+
+#       - name: Merge HTML & JSON reports
+#         run: npx playwright merge-reports --config=playwright.config.js ./all-blob-reports
+
+#       - name: Upload combined report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: Playwright Test Report
+#           path: ./playwright-report
+#           retention-days: 14
+
+#       - name: Send TestDino report
+#         run: |
+#          npx --yes tdpw ./playwright-report \
+#            --token="${{ secrets.TESTDINO_TOKEN }}" \
+#            --upload-html \
+#            --verbose
+
 
 name: Run Playwright tests
 
 on:
-  push:          # runs on every push
-  pull_request:  # runs on new PRs or PR updates
-  schedule:
-    - cron: '30 3 * * 1-5'
+  push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -19,17 +136,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1,2,3,4,5] 
+        shardIndex: [1, 2, 3, 4, 5]
         shardTotal: [5]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js 18.x
-        uses: actions/setup-node@v3
+      # ✅ Required Node version
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
+      # ✅ Required env variables for tests
       - name: Create .env file
         run: |
           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
@@ -41,7 +161,8 @@ jobs:
           echo "STATE=${{ secrets.STATE }}" >> .env
           echo "COUNTRY=${{ secrets.COUNTRY }}" >> .env
           echo "ZIP_CODE=${{ secrets.ZIP_CODE }}" >> .env
-     
+
+      # ✅ Cache npm dependencies
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -50,17 +171,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install deps + browsers
+      # ✅ Install dependencies + TestDino (.tgz) + Playwright browsers
+      - name: Install dependencies & browsers
         run: |
-          npm ci
+          npm install
+          npm install --save-dev @testdino/playwright@latest
           npx playwright install --with-deps chromium firefox webkit
 
-      - name: List Playwright projects (debug)
-        run: npx playwright list --projects | cat
+      # ✅ Run Playwright shard with TestDino
+      - name: Run Playwright shard with TestDino
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}        
+        run: |
+          npx playwright test \
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+            --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
 
-      - name: Run shard ${{ matrix.shardIndex }} 
-        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-
+      # ✅ Upload blob report (needed for merge)
       - name: Upload blob report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -68,54 +195,3 @@ jobs:
           name: blob-report-${{ matrix.shardIndex }}
           path: ./blob-report
           retention-days: 1
-
-  merge-reports:
-    name: Merge Reports
-    needs: run-tests
-    if: always()             # run even if some shards fail
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js 18.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install deps + browsers
-        run: |
-          npm ci
-          npx playwright install --with-deps
-
-      - name: Download all blob reports
-        uses: actions/download-artifact@v4
-        with:
-          path: ./all-blob-reports
-          pattern: blob-report-*
-          merge-multiple: true
-
-      - name: Merge HTML & JSON reports
-        run: npx playwright merge-reports --config=playwright.config.js ./all-blob-reports
-
-      - name: Upload combined report
-        uses: actions/upload-artifact@v4
-        with:
-          name: Playwright Test Report
-          path: ./playwright-report
-          retention-days: 14
-
-      - name: Send TestDino report
-        run: |
-         npx --yes tdpw ./playwright-report \
-           --token="${{ secrets.TESTDINO_TOKEN }}" \
-           --upload-html \
-           --verbose

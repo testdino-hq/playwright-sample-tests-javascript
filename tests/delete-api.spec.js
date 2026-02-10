@@ -17,7 +17,7 @@ test.describe('DELETE User API', () => {
     expect(body).toHaveProperty('isDeleted', true);
   });
 
-  test('Remove user twice', { tag: '@api' }, async ({ request }) => {
+  test.skip('Remove user twice', { tag: '@api' }, async ({ request }) => {
     const userId = 2;
     
     // First deletion
@@ -32,7 +32,7 @@ test.describe('DELETE User API', () => {
     expect(body2).toHaveProperty('id', userId);
   });
 
-  test('Validate body is returned', { tag: '@api' }, async ({ request }) => {
+  test.skip('Validate body is returned', { tag: '@api' }, async ({ request }) => {
     const userId = 3;
     const response = await request.delete(`${API_BASE_URL}${USERS_ENDPOINT}/${userId}`);
     

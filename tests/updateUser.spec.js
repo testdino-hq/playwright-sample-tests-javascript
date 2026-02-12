@@ -16,7 +16,6 @@ test.describe('PUT / PATCH Update User API', () => {
       age: 30 
     };
     
-    // Try PUT first, fallback to PATCH if needed
     const response = await request.put(`${API_BASE_URL}${USERS_ENDPOINT}/${userId}`, {
       data: updateData
     });

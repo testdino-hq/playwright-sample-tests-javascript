@@ -24,7 +24,7 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: 'https://demo.alphabin.co/',
+    baseURL: 'storedemo.testdino.com',
     headless: true,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',

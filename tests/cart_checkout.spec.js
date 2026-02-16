@@ -22,7 +22,6 @@ test.describe('Cart Module', () => {
       await allPages.cartPage.verifyCartItemVisible(productName);
       await allPages.cartPage.clickOnDeleteProductIcon();
       await allPages.cartPage.verifyCartItemDeleted(productName);
-      // await allPages.cartPage.verifyEmptyCartMessage();
       // await allPages.cartPage.clickOnStartShoppingButton();
       // await allPages.allProductsPage.assertAllProductsTitle();
     });

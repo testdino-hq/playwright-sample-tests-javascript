@@ -49,42 +49,41 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-              
-      - name: Install deps + browsers
+
+      # - name: Install deps + browsers
+      #   run: |
+      #     npm ci
+      #     npx playwright install --with-deps chromium firefox webkit
+
+      # # - name: List Playwright projects (debug)
+      # #   run: npx playwright list --projects | cat
+
+      # # ✅ Run Playwright shard with TestDino 
+      # - name: Run Playwright shard with TestDino
+      #   env:
+      #     TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+      #   run: |
+      #     npx tdpw test \
+      #       --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+      #       --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
+
+      # - name: Clear npm cache
+      #   run: npm cache clean --force
+
+      - name: Install dependencies
         run: |
           npm ci
-          npx playwright install --with-deps chromium firefox webkit
-
-      # - name: List Playwright projects (debug)
-      #   run: npx playwright list --projects | cat
-
-      # ✅ Run Playwright shard with TestDino 
+          npm install --save-dev @testdino/playwright@latest
+          npx playwright install --with-deps
+          npx tdpw install --token="${{ secrets.TESTDINO_TOKEN }}"
+          
       - name: Run Playwright shard with TestDino
         env:
           TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
         run: |
-          npx tdpw test \
+          npx playwright test \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
             --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
-
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      # - name: Install dependencies
-      #   run: |
-      #     npm ci
-      #     npm install --save-dev @testdino/playwright@latest
-      #     npx playwright install --with-deps
-      #     npx tdpw install --token="${{ secrets.TESTDINO_TOKEN }}"
-          
-      # - name: Run Playwright shard with TestDino
-      #   env:
-      #     TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
-      #     TESTDINO_SERVER_URL: https://staging-api.testdino.com
-      #   run: |
-      #     npx playwright test \
-      #       --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
-      #       --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
 
       - name: Upload blob report
         if: ${{ !cancelled() }}

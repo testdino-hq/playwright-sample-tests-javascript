@@ -20,17 +20,47 @@ async function login(
   // await allPages.loginPage.login(username, password);
 }
 
-/* ---------- DEMO FLAKY TEST ---------- */
+/* ---------- FLAKY TESTS (fail on 1st run + 1st retry, pass on 2nd retry) ---------- */
 
-test(
-  'Verify that user can login and logout successfully',
-  {tag: '@chromium'},
-  async () => {
-    await login();
-    // Intentionally failing test (no flaky/retry behavior)
-    throw new Error('Intentional permanent failure: login/logout test');
-  }
-);
+test.describe('Flaky tests (pass on 2nd retry)', () => {
+  test.describe.configure({ retries: 2 });
+
+  test(
+    'Verify that user can login and logout successfully',
+    { tag: '@chromium' },
+    async ({}, testInfo) => {
+      await login();
+      if (testInfo.retry < 2) {
+        throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
+      }
+      await expect(true).toBeTruthy();
+    }
+  );
+
+  test(
+    'User searches products and views result (Searchbox)',
+    { tag: '@firefox' },
+    async ({}, testInfo) => {
+      await login();
+      if (testInfo.retry < 2) {
+        throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
+      }
+      await expect(true).toBeTruthy();
+    }
+  );
+
+  test(
+    'User navigates through product categories (Product page)',
+    { tag: '@webkit' },
+    async ({}, testInfo) => {
+      await login();
+      if (testInfo.retry < 2) {
+        throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
+      }
+      await expect(true).toBeTruthy();
+    }
+  );
+});
 
 
 /* ---------- STABLE TESTS (NO RANDOM FAILURES) ---------- */
@@ -142,24 +172,6 @@ test(
 );
 
 test(
-  'User searches products and views result (Searchbox)',
-  { tag: '@firefox' },
-  async () => {
-    await login();
-    // Intentionally failing test (no flaky/retry behavior)
-    throw new Error('Intentional permanent failure: search test');
-
-    // ✅ Pass on rerun
-    // await allPages.homePage.clickOnShopNowButton();
-    // await allPages.allProductsPage.searchProduct('laptop');
-    // await allPages.allProductsPage.verifySearchResultsVisible();
-
-    await expect(true).toBeTruthy();
-  }
-);
-
-
-test(
   'Verify that user can update cart quantity and verify total price',
   { tag: '@chromium' },
   async () => {
@@ -173,24 +185,6 @@ test(
     await expect(true).toBeTruthy();
   }
 );
-
-test(
-  'User navigates through product categories (Product page)',
-  { tag: '@webkit' },
-  async () => {
-    await login();
-    // Intentionally failing test (no flaky/retry behavior)
-    throw new Error('Intentional permanent failure: category navigation test');
-
-    // ✅ Pass on rerun
-    // await allPages.homePage.clickAllProductsNav();
-    // await allPages.allProductsPage.selectCategory('Electronics');
-    // await allPages.allProductsPage.verifyCategoryFilterApplied();
-
-    await expect(true).toBeTruthy();
-  }
-);
-
 
 test(
   'Verify that user can view order history and order detail (Order page)',

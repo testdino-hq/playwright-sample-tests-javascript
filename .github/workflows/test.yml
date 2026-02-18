@@ -13,13 +13,13 @@
 
 # jobs:
 #   run-tests:
-#     name: Run shard ${{ matrix.shardIndex }}/5
+#     name: Run Playwright shards
 #     runs-on: ubuntu-latest
 
 #     strategy:
 #       fail-fast: false
 #       matrix:
-#         shardIndex: [1,2,3,4,5] 
+#         shardIndex: [1,2,3,4,5]
 #         shardTotal: [5]
 
 #     steps:
@@ -29,10 +29,10 @@
 #         uses: actions/setup-node@v3
 #         with:
 #           node-version: '18'
-
 #       - name: Create .env file
 #         run: |
 #           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
+#           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
 #           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
 #           echo "NEW_PASSWORD=${{ secrets.NEW_PASSWORD }}" >> .env
 #           echo "FIRST_NAME=${{ secrets.FIRST_NAME }}" >> .env
@@ -53,13 +53,10 @@
 #       - name: Install deps + browsers
 #         run: |
 #           npm ci
-#           npx playwright install --with-deps chromium firefox webkit
+#           npx playwright install --with-deps
 
-#       - name: List Playwright projects (debug)
-#         run: npx playwright list --projects | cat
-
-#       - name: Run shard ${{ matrix.shardIndex }} 
-#         run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+#       - name: Run shard ${{ matrix.shardIndex }}
+#         run: npx playwright test --project=chromium --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
 #       - name: Upload blob report
 #         if: ${{ !cancelled() }}
@@ -176,7 +173,7 @@ jobs:
         run: |
           npm install
           npm install --save-dev @testdino/playwright@latest
-          npx playwright install --with-deps chromium firefox webkit
+          npx playwright install --with-deps chromium webkit firefox
 
       # ✅ Run Playwright shard with TestDino
       - name: Run Playwright shard with TestDino
@@ -185,8 +182,8 @@ jobs:
         run: |
           npx playwright test \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
-            --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
-
+            --grep="@chromium|@firefox|@webkit|@android|@ios|@api" \
+            
       # ✅ Upload blob report (needed for merge)
       - name: Upload blob report
         if: ${{ !cancelled() }}

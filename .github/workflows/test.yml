@@ -1,43 +1,35 @@
-# .github/workflows/playwright-daily.yml
-# Runs Playwright test shards every day at **11 : 42 AM IST** (06 : 12 UTC)
-# plus anytime you trigger it manually from the Actions tab.
-
 name: Run Playwright tests
 
 on:
-  push:          # runs on every push
-  pull_request:  # runs on new PRs or PR updates
+  push:
+  pull_request:
   schedule:
-    # Original time: 06:30 UTC (11:00 AM IST)
-    - cron: '30 3 * * 1-5'
-    # Second run: +2 hours → 08:30 UTC (01:00 PM IST)
-    - cron: '30 5 * * 1-5'
-    # Third run: +2 more hours → 10:30 UTC (03:00 PM IST)
-    - cron: '30 7 * * 1-5'
+    - cron: '30 3 * * 1-5' # 11:00 AM IST
   workflow_dispatch:
 
 jobs:
   run-tests:
-    name: Run Playwright shards
+    name: Run Playwright tests ${{ matrix.shardIndex }}/3
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1,2,3,4,5]
-        shardTotal: [5]
+        shardIndex: [1, 2, 3]
+        shardTotal: [3]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js 18.x
+      # ✅ REQUIRED: Node 20
+      - name: Setup Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
+
       - name: Create .env file
         run: |
           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
-          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
           echo "NEW_PASSWORD=${{ secrets.NEW_PASSWORD }}" >> .env
           echo "FIRST_NAME=${{ secrets.FIRST_NAME }}" >> .env
@@ -46,7 +38,7 @@ jobs:
           echo "STATE=${{ secrets.STATE }}" >> .env
           echo "COUNTRY=${{ secrets.COUNTRY }}" >> .env
           echo "ZIP_CODE=${{ secrets.ZIP_CODE }}" >> .env
-     
+
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -58,10 +50,39 @@ jobs:
       - name: Install deps + browsers
         run: |
           npm ci
-          npx playwright install --with-deps
+          npx playwright install --with-deps chromium firefox webkit
 
-      - name: Run shard ${{ matrix.shardIndex }}
-        run: npx playwright test --project=chromium --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      # ✅ FULL + RERUN LOGIC
+      - name: Run Playwright (rerun failed tests if applicable)
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+          SHARD_INDEX: ${{ matrix.shardIndex }}
+          SHARD_TOTAL: ${{ matrix.shardTotal }}
+        run: |
+          echo "GitHub run attempt: ${{ github.run_attempt }}"
+          if [[ "${{ github.run_attempt }}" -gt 1 ]]; then
+            echo "Detected re-run. Checking failed test metadata from TestDino."
+            npx tdpw last-failed \
+              --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+              > last-failed-flags.txt
+            EXTRA_PW_FLAGS="$(cat last-failed-flags.txt)"
+            if [[ -n "$EXTRA_PW_FLAGS" ]]; then
+              echo "Running only failed tests for this shard:"
+              echo "$EXTRA_PW_FLAGS"
+              # IMPORTANT: JSON + BLOB BOTH REQUIRED
+              # Ensure playwright-report directory exists
+              mkdir -p ./playwright-report
+              eval "npx playwright test $EXTRA_PW_FLAGS"
+              exit 0
+            fi
+            echo "No failed test metadata found. Falling back to full shard."
+          fi
+          # First run (full shard)
+          # Ensure playwright-report directory exists
+          mkdir -p ./playwright-report
+          npx playwright test \
+            --grep="@chromium|@firefox|@webkit" \
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
@@ -71,19 +92,29 @@ jobs:
           path: ./blob-report
           retention-days: 1
 
+      # ✅ THIS WILL SHOW "Metadata cached successfully ✔" WHEN JSON EXISTS
+      - name: Cache tdpw last failed metadata
+        if: always()
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+          SHARD_INDEX: ${{ matrix.shardIndex }}
+          SHARD_TOTAL: ${{ matrix.shardTotal }}
+        run: |
+          npx tdpw cache --verbose
   merge-reports:
     name: Merge Reports
     needs: run-tests
-    if: always()             # run even if some shards fail
+    if: always()
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js 18.x
+      # ✅ Node 20 here as well
+      - name: Setup Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Cache npm dependencies
         uses: actions/cache@v3
@@ -92,12 +123,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install deps + browsers
         run: |
           npm ci
           npx playwright install --with-deps
-
       - name: Download all blob reports
         uses: actions/download-artifact@v4
         with:
@@ -117,7 +146,8 @@ jobs:
 
       - name: Send TestDino report
         run: |
-         npx --yes tdpw ./playwright-report \
-           --token="${{ secrets.TESTDINO_TOKEN }}" \
-           --upload-html \
-           --verbose
+          npx --yes tdpw ./playwright-report \
+            --token="${{ secrets.TESTDINO_TOKEN }}" \
+            --upload-html \
+            --upload-traces \
+            --verbose

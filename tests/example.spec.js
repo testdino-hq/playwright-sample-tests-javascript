@@ -221,7 +221,7 @@ test('Verify that user add product to cart before logging in and then complete o
     await allPages.homePage.clickProductImage();
     await allPages.homePage.clickAddToCartButton();
     await allPages.homePage.validateAddCartNotification();
-    await allPages.loginPage.clickOnUserProfileIcon();
+    // await allPages.loginPage.clickOnUserProfileIcon();
   })
   // await test.step('Login and complete order', async () => {
 //     await login();
@@ -434,3 +434,20 @@ test('Verify that user can update personal information', { tag: '@webkit' }, asy
 //   await allPages.userPage.verifyPersonalInfoUpdated();
 });
 
+test('Verify that user is able to delete selected product from cart', { tag: '@android' }, async () => {
+    const productName = 'GoPro HERO10 Black';
+    await login();
+    await allPages.inventoryPage.clickOnShopNowButton();
+    await allPages.inventoryPage.clickOnAllProductsLink();
+    await allPages.inventoryPage.searchProduct(productName);
+    await allPages.inventoryPage.verifyProductTitleVisible(productName);
+    await allPages.inventoryPage.clickOnAddToCartIcon();
+
+    await allPages.cartPage.clickOnCartIcon();
+    await allPages.cartPage.verifyCartItemVisible(productName);
+    await allPages.cartPage.clickOnDeleteProductIcon();
+    await allPages.cartPage.verifyCartItemDeleted(productName);
+    await allPages.cartPage.verifyEmptyCartMessage();
+    await allPages.cartPage.clickOnStartShoppingButton();
+    await allPages.allProductsPage.assertAllProductsTitle();
+});

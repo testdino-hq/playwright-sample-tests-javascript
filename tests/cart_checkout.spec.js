@@ -27,7 +27,17 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
 
   test(
     'Verify that user can login and logout successfully',
-    { tag: '@chromium' },
+    {
+      tag: '@chromium',
+      annotation: [
+        { type: 'testdino:priority', description: 'p1' },
+        { type: 'testdino:feature', description: 'Login' },
+        { type: 'testdino:link', description: 'https://jira.example.com/LOGIN-001' },
+        { type: 'testdino:owner', description: 'qa-team' },
+        { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+        { type: 'testdino:context', description: 'Flaky test: login and logout on Chromium' }
+      ]
+    },
     async ({}, testInfo) => {
       await login();
       if (testInfo.retry < 2) {
@@ -39,7 +49,17 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
 
   test(
     'User searches products and views result (Searchbox)',
-    { tag: '@firefox' },
+    {
+      tag: '@firefox',
+      annotation: [
+        { type: 'testdino:priority', description: 'p1' },
+        { type: 'testdino:feature', description: 'Search' },
+        { type: 'testdino:link', description: 'https://jira.example.com/SEARCH-001' },
+        { type: 'testdino:owner', description: 'qa-team' },
+        { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+        { type: 'testdino:context', description: 'Flaky test: search products on Firefox' }
+      ]
+    },
     async ({}, testInfo) => {
       await login();
       if (testInfo.retry < 2) {
@@ -51,7 +71,17 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
 
   test(
     'User navigates through product categories (Product page)',
-    { tag: '@webkit' },
+    {
+      tag: '@webkit',
+      annotation: [
+        { type: 'testdino:priority', description: 'p1' },
+        { type: 'testdino:feature', description: 'Products' },
+        { type: 'testdino:link', description: 'https://jira.example.com/PRODUCTS-001' },
+        { type: 'testdino:owner', description: 'qa-team' },
+        { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+        { type: 'testdino:context', description: 'Flaky test: product categories on WebKit' }
+      ]
+    },
     async ({}, testInfo) => {
       await login();
       if (testInfo.retry < 2) {
@@ -67,7 +97,17 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
 
 test(
   'Verify that all the navbar are working properly',
-  { tag: '@webkit' },
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Navbar' },
+      { type: 'testdino:link', description: 'https://jira.example.com/NAVBAR-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Navbar functionality on WebKit' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -76,7 +116,17 @@ test(
 
 test(
   'Verify that user can edit and delete a product review',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Edit and delete product review on Chromium' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -85,7 +135,17 @@ test(
 
 test(
   'Verify that User Can Complete the Journey from Login to Order Placement',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Login to order placement journey on Chromium' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -94,7 +154,17 @@ test(
 
 test(
   'Verify that user can filter products by price range',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Filter' },
+      { type: 'testdino:link', description: 'https://jira.example.com/FILTER-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Filter products by price on Firefox' }
+    ]
+  },
   async () => {
     await expect(true).toBeTruthy();
   }
@@ -102,7 +172,17 @@ test(
 
 test(
   'Verify if user can add product to wishlist, move to cart and checkout',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Wishlist' },
+      { type: 'testdino:link', description: 'https://jira.example.com/WISHLIST-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Wishlist to cart and checkout on Firefox' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -111,7 +191,17 @@ test(
 
 test(
   'Verify that user is able to submit a product review',
-  { tag: '@webkit' },
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Submit product review on WebKit' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -120,7 +210,17 @@ test(
 
 test(
   'Verify that all the navbar are working properly (Navbar)',
-  { tag: '@webkit' },
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Navbar' },
+      { type: 'testdino:link', description: 'https://jira.example.com/NAVBAR-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Navbar (Navbar) on WebKit' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -129,7 +229,17 @@ test(
 
 test(
   'Verify that user can edit and delete a product review (Single review)',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Edit and delete review (Single review) on Chromium' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -138,7 +248,17 @@ test(
 
 test(
   'Verify that User Can Complete the Journey from Login to Order Placement (Single order)',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Login to order (Single order) on Chromium' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -147,7 +267,17 @@ test(
 
 test(
   'Verify that user can filter products by price range (Price page',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Filter' },
+      { type: 'testdino:link', description: 'https://jira.example.com/FILTER-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Filter by price (Price page) on Firefox' }
+    ]
+  },
   async () => {
     await expect(true).toBeTruthy();
   }
@@ -155,7 +285,17 @@ test(
 
 test(
   'Verify if user can add product to wishlist, move to cart(Checkout page)',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Wishlist' },
+      { type: 'testdino:link', description: 'https://jira.example.com/WISHLIST-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Wishlist to cart (Checkout page) on Firefox' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -164,7 +304,17 @@ test(
 
 test(
   'Verify that user is able to submit a product review (Review)',
-  { tag: '@webkit' },
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-004' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Submit product review (Review) on WebKit' }
+    ]
+  },
   async () => {
     await login();
     await expect(true).toBeTruthy();
@@ -173,7 +323,17 @@ test(
 
 test(
   'Verify that user can update cart quantity and verify total price',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Cart' },
+      { type: 'testdino:link', description: 'https://jira.example.com/CART-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Update cart quantity and total price on Chromium' }
+    ]
+  },
   async () => {
     await login();
     // await allPages.homePage.clickOnShopNowButton();
@@ -188,7 +348,17 @@ test(
 
 test(
   'Verify that user can view order history and order detail (Order page)',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Order history and order detail (Order page) on Firefox' }
+    ]
+  },
   async () => {
     await login();
     // await allPages.loginPage.clickOnUserProfileIcon();
@@ -202,7 +372,17 @@ test(
 
 test(
   'Verify that user can update cart quantity and verify total price (Pricing)',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Cart' },
+      { type: 'testdino:link', description: 'https://jira.example.com/CART-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Cart quantity and total price (Pricing) on Chromium' }
+    ]
+  },
   async () => {
     await login();
     // await allPages.homePage.clickOnShopNowButton();
@@ -217,7 +397,17 @@ test(
 
 test(
   'Verify that user can view order history and order details properly (Order details)',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-004' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Order history and details (Order details) on Firefox' }
+    ]
+  },
   async () => {
     await login();
     // await allPages.loginPage.clickOnUserProfileIcon();
@@ -231,7 +421,17 @@ test(
 
 test(
   'Verify that users can update cart quantity and verify total price (Single order)',
-  { tag: '@chromium' },
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Cart' },
+      { type: 'testdino:link', description: 'https://jira.example.com/CART-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Cart quantity (Single order) on Chromium' }
+    ]
+  },
   async () => {
     await login();
     // await allPages.homePage.clickOnShopNowButton();
@@ -246,7 +446,17 @@ test(
 
 test(
   'Verify that users can view order history and order details properly (Order history)',
-  { tag: '@firefox' },
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-005' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Order history on Firefox' }
+    ]
+  },
   async () => {
     await login();
     // await allPages.loginPage.clickOnUserProfileIcon();

@@ -28,12 +28,32 @@ async function logout() {
   await allPages.loginPage.clickOnLogoutButton();
 }
 
-test('Verify that user can login and logout successfully', { tag: '@android' }, async () => {
+test('Verify that user can login and logout successfully', {
+  tag: '@android',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Login' },
+    { type: 'testdino:link', description: 'https://jira.example.com/LOGIN-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Login and logout on Android' }
+  ]
+}, async () => {
   await login();
   await logout();
 });
 
-test('Verify that all the navbar are working properly', { tag: '@webkit' }, async () => {
+test('Verify that all the navbar are working properly', {
+  tag: '@webkit',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Navbar' },
+    { type: 'testdino:link', description: 'https://jira.example.com/NAVBAR-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Navbar functionality on WebKit' }
+  ]
+}, async () => {
     // await login();
     await allPages.homePage.clickBackToHomeButton();
     // await allPages.homePage.assertHomePage();
@@ -45,7 +65,17 @@ test('Verify that all the navbar are working properly', { tag: '@webkit' }, asyn
     await allPages.homePage.assertAboutUsTitle();
 });
 
-test('Verify that user can edit and delete a product review', { tag: '@firefox' }, async () => {
+test('Verify that user can edit and delete a product review', {
+  tag: '@firefox',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Review' },
+    { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Edit and delete product review on Firefox' }
+  ]
+}, async () => {
   await test.step('Login as existing user and navigate to a product', async () => {
     // await login();
   })
@@ -83,7 +113,17 @@ test('Verify that user can edit and delete a product review', { tag: '@firefox' 
   })
 });
 
-test('Verify that User Can Complete the Journey from Login to Order Placement', { tag: '@ios' }, async () => {
+test('Verify that User Can Complete the Journey from Login to Order Placement', {
+  tag: '@ios',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Order' },
+    { type: 'testdino:link', description: 'https://jira.example.com/ORDER-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Login to order placement journey on iOS' }
+  ]
+}, async () => {
   const productName = 'GoPro HERO10 Black';
   // await login();
   await allPages.inventoryPage.clickOnShopNowButton();
@@ -103,7 +143,17 @@ test('Verify that User Can Complete the Journey from Login to Order Placement', 
   // await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
 });
 
-test('Verify that a New User Can Successfully Complete the Journey from Registration to a Single Order Placement', { tag: '@android' }, async () => {
+test('Verify that a New User Can Successfully Complete the Journey from Registration to a Single Order Placement', {
+  tag: '@android',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Registration' },
+    { type: 'testdino:link', description: 'https://jira.example.com/REG-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Registration to single order on Android' }
+  ]
+}, async () => {
   // fresh test data
   const email = `test+${Date.now()}@test.com`;
   const firstName = 'Test';
@@ -215,7 +265,17 @@ test('Verify that a New User Can Successfully Complete the Journey from Registra
   });
 });
 
-test('Verify that user add product to cart before logging in and then complete order after logging in', { tag: '@webkit' }, async () => {
+test('Verify that user add product to cart before logging in and then complete order after logging in', {
+  tag: '@webkit',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Cart' },
+    { type: 'testdino:link', description: 'https://jira.example.com/CART-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Add to cart before login, order after login on WebKit' }
+  ]
+}, async () => {
   await test.step('Navigate and add product to cart before logging in', async () => {
     await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickProductImage();
@@ -235,7 +295,17 @@ test('Verify that user add product to cart before logging in and then complete o
 // })
 });
 
-test('Verify that user can filter products by price range', { tag: '@filter' }, async () => {
+test('Verify that user can filter products by price range', {
+  tag: '@filter',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Filter' },
+    { type: 'testdino:link', description: 'https://jira.example.com/FILTER-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Filter products by price range' }
+  ]
+}, async () => {
     await login();
     await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickOnFilterButton();
@@ -243,7 +313,17 @@ test('Verify that user can filter products by price range', { tag: '@filter' }, 
     await allPages.homePage.clickOnFilterButton();
 });
 
-test('Verify if user can add product to wishlist, moves it to card and then checks out', { tag: '@wishlist' }, async () => {
+test('Verify if user can add product to wishlist, moves it to card and then checks out', {
+  tag: '@wishlist',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Wishlist' },
+    { type: 'testdino:link', description: 'https://jira.example.com/WISHLIST-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Wishlist to cart and checkout' }
+  ]
+}, async () => {
     // await login();
   
     await test.step('Add product to wishlistand then add to cart', async () => {
@@ -267,7 +347,19 @@ test('Verify if user can add product to wishlist, moves it to card and then chec
   
 });
 
-test('Verify new user views and cancels an order in my orders', { tag: '@chromium' }, async () => {
+test.describe('Orders Module', () => {
+  test.describe('Order Cancellation', () => {
+    test('Verify new user views and cancels an order in my orders ', {
+      tag: '@chromium',
+      annotation: [
+        { type: 'testdino:priority', description: 'p0' },
+        { type: 'testdino:feature', description: 'Orders' },
+        { type: 'testdino:link', description: 'https://jira.example.com/ORDER-002' },
+        { type: 'testdino:owner', description: '@Kriti Verma' },
+        { type: 'testdino:notify-slack', description: '@Kriti Verma' },
+        { type: 'testdino:context', description: 'Critical order cancellation flow for new users' }
+      ]
+    }, async () => {
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -323,9 +415,21 @@ test('Verify new user views and cancels an order in my orders', { tag: '@chromiu
   //   await allPages.orderPage.clickCancelOrderButton();
   //   await allPages.orderPage.confirmCancellation();
   // });
+    });
+  });
 });
 
-test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement', { tag: '@firefox' }, async () => {
+test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement', {
+  tag: '@firefox',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Order' },
+    { type: 'testdino:link', description: 'https://jira.example.com/ORDER-003' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Registration to multiple order placement on Firefox' }
+  ]
+}, async () => {
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -373,7 +477,17 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
   })
 });
 
-test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully', { tag: '@ios' }, async () => {
+test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully', {
+  tag: '@ios',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Registration' },
+    { type: 'testdino:link', description: 'https://jira.example.com/REG-002' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Sign up, login and navigate home on iOS' }
+  ]
+}, async () => {
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -395,7 +509,17 @@ test('Verify that the new user is able to Sign Up, Log In, and Navigate to the H
   // })
 })
 
-test('Verify that user is able to fill Contact Us page successfully', { tag: '@chromium' }, async () => {
+test('Verify that user is able to fill Contact Us page successfully', {
+  tag: '@chromium',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Contact' },
+    { type: 'testdino:link', description: 'https://jira.example.com/CONTACT-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Contact Us form submission on Chromium' }
+  ]
+}, async () => {
     await login();
     await allPages.homePage.clickOnContactUsLink();
     await allPages.contactUsPage.assertContactUsTitle();
@@ -403,7 +527,17 @@ test('Verify that user is able to fill Contact Us page successfully', { tag: '@c
     await allPages.contactUsPage.verifySuccessContactUsFormSubmission();
 });
 
-test('Verify that user is able to submit a product review', { tag: '@firefox' }, async () => {
+test('Verify that user is able to submit a product review', {
+  tag: '@firefox',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Review' },
+    { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-002' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Submit product review on Firefox' }
+  ]
+}, async () => {
   await test.step('Login as existing user and navigate to a product', async () => {
     // await login();
   })
@@ -428,13 +562,33 @@ test('Verify that user is able to submit a product review', { tag: '@firefox' },
   })
 });
 
-test('Verify that user can update personal information', { tag: '@webkit' }, async () => {
+test('Verify that user can update personal information', {
+  tag: '@webkit',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Profile' },
+    { type: 'testdino:link', description: 'https://jira.example.com/PROFILE-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Update personal information on WebKit' }
+  ]
+}, async () => {
   await allPages.userPage.clickOnUserProfileIcon();
 //   await allPages.userPage.updatePersonalInfo();
 //   await allPages.userPage.verifyPersonalInfoUpdated();
 });
 
-test('Verify that user is able to delete selected product from cart', { tag: '@android' }, async () => {
+test('Verify that user is able to delete selected product from cart', {
+  tag: '@android',
+  annotation: [
+    { type: 'testdino:priority', description: 'p1' },
+    { type: 'testdino:feature', description: 'Cart' },
+    { type: 'testdino:link', description: 'https://jira.example.com/CART-001' },
+    { type: 'testdino:owner', description: 'qa-team' },
+    { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+    { type: 'testdino:context', description: 'Delete selected product from cart on Android' }
+  ]
+}, async () => {
     const productName = 'GoPro HERO10 Black';
     await login();
     await allPages.inventoryPage.clickOnShopNowButton();

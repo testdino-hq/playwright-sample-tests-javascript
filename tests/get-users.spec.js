@@ -7,7 +7,17 @@ const USERS_ENDPOINT = '/users';
 
 test.describe('GET Users API', () => {
   
-  test('Fetch all users', { tag: '@api' }, async ({ request }) => {
+  test('Fetch all users', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'GET fetch all users' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);
@@ -16,7 +26,17 @@ test.describe('GET Users API', () => {
     expect(Array.isArray(body.users)).toBe(true);
   });
 
-  test('Fetch user by ID = 1', { tag: '@api' }, async ({ request }) => {
+  test('Fetch user by ID = 1', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'GET user by ID' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -26,7 +46,17 @@ test.describe('GET Users API', () => {
     expect(body).toHaveProperty('lastName');
   });
 
-  test('Validate total users > 0', { tag: '@api' }, async ({ request }) => {
+  test('Validate total users > 0', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Validate total users count' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);
@@ -35,7 +65,17 @@ test.describe('GET Users API', () => {
     expect(body.total).toBeGreaterThan(0);
   });
 
-  test('Validate user image exists', { tag: '@api' }, async ({ request }) => {
+  test('Validate user image exists', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-004' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Validate user image field' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -45,7 +85,17 @@ test.describe('GET Users API', () => {
     expect(typeof body.image).toBe('string');
   });
 
-  test('Validate user 1 has firstName field', { tag: '@api' }, async ({ request }) => {
+  test('Validate user 1 has firstName field', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-005' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Validate firstName field' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/1`);
     
     expect(response.status()).toBe(200);
@@ -55,13 +105,33 @@ test.describe('GET Users API', () => {
     expect(body.firstName.length).toBeGreaterThan(0);
   });
 
-  test('Invalid user ID returns 404', { tag: '@api' }, async ({ request }) => {
+  test('Invalid user ID returns 404', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-006' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Invalid user ID returns 404' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/999999`);
     
     expect(response.status()).toBe(404);
   });
 
-  test('default users (no query) returns data object/array', { tag: '@api' }, async ({ request }) => {
+  test('default users (no query) returns data object/array', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-007' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Default users response structure' }
+    ]
+  }, async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}`);
     
     expect(response.status()).toBe(200);
@@ -71,7 +141,17 @@ test.describe('GET Users API', () => {
     expect(body.users || Array.isArray(body)).toBeTruthy();
   });
 
-  test('limit param returns limited results', { tag: '@api' }, async ({ request }) => {
+  test('limit param returns limited results', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-008' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Limit param pagination' }
+    ]
+  }, async ({ request }) => {
     const limit = 5;
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}?limit=${limit}`);
     
@@ -82,7 +162,17 @@ test.describe('GET Users API', () => {
     expect(usersArray.length).toBeLessThanOrEqual(limit);
   });
 
-  test('skip param shifts results', { tag: '@api' }, async ({ request }) => {
+  test('skip param shifts results', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-009' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Skip param pagination' }
+    ]
+  }, async ({ request }) => {
     const skip = 5;
     const limit = 10;
     
@@ -107,7 +197,17 @@ test.describe('GET Users API', () => {
     }
   });
 
-  test('sorting / search query (if supported) returns filtered results', { tag: '@api' }, async ({ request }) => {
+  test('sorting / search query (if supported) returns filtered results', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-010' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Search query filtered results' }
+    ]
+  }, async ({ request }) => {
     // Try search query parameter (common patterns: q, search, query)
     const searchTerm = 'john';
     const response = await request.get(`${API_BASE_URL}${USERS_ENDPOINT}/search?q=${searchTerm}`);
@@ -123,7 +223,17 @@ test.describe('GET Users API', () => {
     }
   });
 
-  test('delayed response (3s) should return 200', { tag: '@api' }, async ({ request }) => {
+  test('delayed response (3s) should return 200', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-011' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Delayed response returns 200' }
+    ]
+  }, async ({ request }) => {
     const isRetry = test.info().retry > 0;
     if (!isRetry) {
       expect(true).toBe(false); 
@@ -146,7 +256,17 @@ test.describe('GET Users API', () => {
     expect(body).toBeInstanceOf(Object);
   });
 
-  test('enforce timeout (expect to fail if too slow) — set short timeout', { tag: '@api' }, async ({ request }) => {
+  test('enforce timeout (expect to fail if too slow) — set short timeout', {
+    tag: '@api',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'API' },
+      { type: 'testdino:link', description: 'https://jira.example.com/API-012' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Enforce request timeout' }
+    ]
+  }, async ({ request }) => {
     const delay = 5; 
     const shortTimeout = 2000; 
     

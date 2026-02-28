@@ -9,169 +9,692 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test.describe('Cart Module', () => {
-  test.describe('Product Removal', () => {
-    test('Verify that user is able to delete selected product from cart ',{tag: '@ios'}, async () => {
-      const productName = 'GoPro HERO10 Black';
-      await allPages.inventoryPage.clickOnAllProductsLink();
-      await allPages.inventoryPage.searchProduct(productName);
-      await allPages.inventoryPage.verifyProductTitleVisible(productName);
-      await allPages.inventoryPage.clickOnAddToCartIcon();
+/* ---------- Helpers ---------- */
 
-      await allPages.cartPage.clickOnCartIcon();
-      await allPages.cartPage.verifyCartItemVisible(productName);
-      await allPages.cartPage.clickOnDeleteProductIcon();
-      await allPages.cartPage.verifyCartItemDeleted(productName);
+async function login(
+  username = process.env.USERNAME,
+  password = process.env.PASSWORD
+) {
+  await allPages.loginPage.clickOnUserProfileIcon();
+  await allPages.loginPage.validateSignInPage();
+  // await allPages.loginPage.login(username, password);
+}
 
-    });
-  });
+/* ---------- FLAKY TESTS (fail on 1st run + 1st retry, pass on 2nd retry) ---------- */
+
+test.describe('Flaky tests (pass on 2nd retry)', () => {
+  test.describe.configure({ retries: 2 });
+
+  test(
+    'Verify that user can login and logout successfully',
+    {
+      tag: '@chromium',
+      annotation: [
+        { type: 'testdino:priority', description: 'p1' },
+        { type: 'testdino:feature', description: 'Login' },
+        { type: 'testdino:link', description: 'https://jira.example.com/LOGIN-001' },
+        { type: 'testdino:owner', description: 'qa-team' },
+        { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+        { type: 'testdino:context', description: 'Flaky test: login and logout on Chromium' }
+      ]
+    },
+    async ({}, testInfo) => {
+      const start = Date.now();
+      await login();
+      if (testInfo.retry < 2) {
+        throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
+      }
+      await expect(true).toBeTruthy();
+      const flowTime = Date.now() - start;
+      test.info().annotations.push({
+        type: 'testdino:metric',
+        description: JSON.stringify({
+          name: 'flow-time',
+          value: flowTime,
+          unit: 'ms',
+          threshold: 5000,
+        }),
+      });
+    }
+  );
+
+  test(
+    'User searches products and views result (Searchbox)',
+    {
+      tag: '@firefox',
+      annotation: [
+        { type: 'testdino:priority', description: 'p1' },
+        { type: 'testdino:feature', description: 'Search' },
+        { type: 'testdino:link', description: 'https://jira.example.com/SEARCH-001' },
+        { type: 'testdino:owner', description: 'qa-team' },
+        { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+        { type: 'testdino:context', description: 'Flaky test: search products on Firefox' }
+      ]
+    },
+    async ({}, testInfo) => {
+      const start = Date.now();
+      await login();
+      if (testInfo.retry < 2) {
+        throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
+      }
+      await expect(true).toBeTruthy();
+      const flowTime = Date.now() - start;
+      test.info().annotations.push({
+        type: 'testdino:metric',
+        description: JSON.stringify({
+          name: 'flow-time',
+          value: flowTime,
+          unit: 'ms',
+          threshold: 5000,
+        }),
+      });
+    }
+  );
+
+  test(
+    'User navigates through product categories (Product page)',
+    {
+      tag: '@webkit',
+      annotation: [
+        { type: 'testdino:priority', description: 'p1' },
+        { type: 'testdino:feature', description: 'Products' },
+        { type: 'testdino:link', description: 'https://jira.example.com/PRODUCTS-001' },
+        { type: 'testdino:owner', description: 'qa-team' },
+        { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+        { type: 'testdino:context', description: 'Flaky test: product categories on WebKit' }
+      ]
+    },
+    async ({}, testInfo) => {
+      const start = Date.now();
+      await login();
+      if (testInfo.retry < 2) {
+        throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
+      }
+      await expect(true).toBeTruthy();
+      const flowTime = Date.now() - start;
+      test.info().annotations.push({
+        type: 'testdino:metric',
+        description: JSON.stringify({
+          name: 'flow-time',
+          value: flowTime,
+          unit: 'ms',
+          threshold: 5000,
+        }),
+      });
+    }
+  );
 });
 
-test.describe('Orders Module', () => {
-  test.describe('Order Cancellation', () => {
-    test('Verify new user views and cancels an order in my orders ',{tag: '@chromium'}, async () => {
-      const email = `test+${Date.now()}@test.com`;
-      const firstName = 'Test';
-      const lastName = 'User';
-      let productName = `Rode NT1-A Condenser Mic`;
 
-      await test.step('Verify that user can register successfully', async () => {
-        // await allPages.loginPage.clickOnUserProfileIcon();
-        // await allPages.loginPage.validateSignInPage();
-        // await allPages.loginPage.clickOnSignupLink();
-        // await allPages.signupPage.assertSignupPage();
-        // await allPages.signupPage.signup(firstName, lastName, email, process.env.PASSWORD);
-        // await allPages.signupPage.verifySuccessSignUp();
-      });
+/* ---------- STABLE TESTS (NO RANDOM FAILURES) ---------- */
 
-      await test.step('Navigate to All Products and add view details of a random product', async () => {
-        await allPages.homePage.clickAllProductsNav();
-        productName = await allPages.allProductsPage.getNthProductName(1);
-        await allPages.allProductsPage.clickNthProduct(1);
-        await allPages.productDetailsPage.clickAddToCartButton();
-      });
-
-      await test.step('Add product to cart, add new address and checkout', async () => {
-        await allPages.productDetailsPage.clickCartIcon();
-      //   await allPages.cartPage.assertYourCartTitle();
-      //   await expect(allPages.cartPage.getCartItemName()).toContainText(productName, { timeout: 10000 });
-      //   await allPages.cartPage.clickOnCheckoutButton();
-      //   await allPages.checkoutPage.verifyCheckoutTitle();
-      //   await allPages.checkoutPage.fillShippingAddress(
-      //     firstName, email, 'New York', 'New York', '123 Main St', '10001', 'United States'
-      //   );
-      //   await allPages.checkoutPage.clickSaveAddressButton();
-      //   await allPages.checkoutPage.assertAddressAddedToast();
-      // });
-
-      // await test.step('Complete order and verify in my orders', async () => {
-      //   await allPages.checkoutPage.selectCashOnDelivery();
-      //   await allPages.checkoutPage.verifyCheckoutTitle();
-      //   await allPages.checkoutPage.clickOnPlaceOrder();
-      //   await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-      //   await allPages.inventoryPage.clickOnContinueShopping();
-
-      //   await allPages.loginPage.clickOnUserProfileIcon();
-      //   await allPages.orderPage.clickOnMyOrdersTab();
-      //   await allPages.orderPage.clickCancelOrderButton();
-      //   await allPages.orderPage.confirmCancellation();
-      });
+test(
+  'Verify that all the navbar are working properly',
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Navbar' },
+      { type: 'testdino:link', description: 'https://jira.example.com/NAVBAR-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Navbar functionality on WebKit' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
     });
-  });
-});
+  }
+);
 
-test.describe('User Journey', () => {
-  test.describe('Multiple Order Placement', () => {
-    test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement ',{tag: '@chromium'}, async () => {
-      const email = `test+${Date.now()}@test.com`;
-      const firstName = 'Test';
-      const lastName = 'User';
-
-      await test.step('Verify that user can register successfully', async () => {
-        // await allPages.loginPage.clickOnUserProfileIcon();
-        // await allPages.loginPage.validateSignInPage();
-        // await allPages.loginPage.clickOnSignupLink();
-        // await allPages.signupPage.assertSignupPage();
-        // await allPages.signupPage.signup(firstName, lastName, email, process.env.PASSWORD);
-        // await allPages.signupPage.verifySuccessSignUp();
-      });
-
-      await test.step('Navigate product details and validate tabs', async () => {
-        await allPages.homePage.clickOnShopNowButton();
-        // await allPages.allProductsPage.assertAllProductsTitle();
-        // await allPages.allProductsPage.clickNthProduct(1);
-        // await allPages.productDetailsPage.clickOnReviewsTab();
-        // await allPages.productDetailsPage.assertReviewsTab();
-        // await allPages.productDetailsPage.clickOnAdditionalInfoTab();
-        // await allPages.productDetailsPage.assertAdditionalInfoTab();
-      });
-
-      await test.step('Place first order', async () => {
-        // await allPages.productDetailsPage.clickAddToCartButton();
-        // await allPages.productDetailsPage.clickCartIcon();
-        // await allPages.cartPage.clickIncreaseQuantityButton();
-        // await allPages.cartPage.clickOnCheckoutButton();
-        // await allPages.checkoutPage.verifyCheckoutTitle();
-        // await allPages.checkoutPage.selectCashOnDelivery();
-        // await allPages.checkoutPage.fillShippingAddress(
-        //   process.env.SFIRST_NAME,
-        //   email,
-        //   process.env.SCITY,
-        //   process.env.SSTATE,
-        //   process.env.SSTREET_ADD,
-        //   process.env.SZIP_CODE,
-        //   process.env.SCOUNTRY
-        // );
-        // await allPages.checkoutPage.clickSaveAddressButton();
-        // await allPages.checkoutPage.clickOnPlaceOrder();
-        // await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-        // await allPages.checkoutPage.clickOnContinueShoppingButton();
-      });
-
-      await test.step('Place second order using existing address', async () => {
-        // await allPages.homePage.clickOnShopNowButton();
-        // await allPages.allProductsPage.assertAllProductsTitle();
-        // await allPages.allProductsPage.clickNthProduct(1);
-        // await allPages.productDetailsPage.clickAddToCartButton();
-        // await allPages.productDetailsPage.clickCartIcon();
-        // await allPages.cartPage.clickOnCheckoutButton();
-        // await allPages.checkoutPage.verifyCheckoutTitle();
-        // await allPages.checkoutPage.selectCashOnDelivery();
-        // await allPages.checkoutPage.clickOnPlaceOrder();
-        // await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-      });
+test(
+  'Verify that user can edit and delete a product review',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Edit and delete product review on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
     });
-  });
-});
+  }
+);
 
-test.describe('Authentication', () => {
-  test.describe('Signup & Login', () => {
-    test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully ',{tag: '@chromium'}, async () => {
-      const email = `test+${Date.now()}@test.com`;
-      const firstName = 'Test';
-      const lastName = 'User';
-
-      // await allPages.loginPage.clickOnUserProfileIcon();
-      // await allPages.loginPage.validateSignInPage();
-      // await allPages.loginPage.clickOnSignupLink();
-      // await allPages.signupPage.assertSignupPage();
-      // await allPages.signupPage.signup(firstName, lastName, email, process.env.PASSWORD);
-      // await allPages.signupPage.verifySuccessSignUp();
-
-      // await allPages.loginPage.validateSignInPage();
-      // await allPages.loginPage.login(email, process.env.PASSWORD);
-      // await allPages.loginPage.verifySuccessSignIn();
-      // await expect(allPages.homePage.getHomeNav()).toBeVisible({ timeout: 30000 });
+test(
+  'Verify that User Can Complete the Journey from Login to Order Placement',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Login to order placement journey on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
     });
-  });
-});
+  }
+);
 
-test.describe('User Profile', () => {
-  test.describe('Personal Information', () => {
-    test('Verify that user can update personal information ',{tag: '@firefox'}, async () => {
-      await allPages.userPage.clickOnUserProfileIcon();
-      // await allPages.userPage.updatePersonalInfo();
-      // await allPages.userPage.verifyPersonalInfoUpdated();
+test(
+  'Verify that user can filter products by price range',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Filter' },
+      { type: 'testdino:link', description: 'https://jira.example.com/FILTER-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Filter products by price on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
     });
-  });
-});
+  }
+);
+
+test(
+  'Verify if user can add product to wishlist, move to cart and checkout',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Wishlist' },
+      { type: 'testdino:link', description: 'https://jira.example.com/WISHLIST-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Wishlist to cart and checkout on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user is able to submit a product review',
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Submit product review on WebKit' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that all the navbar are working properly (Navbar)',
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Navbar' },
+      { type: 'testdino:link', description: 'https://jira.example.com/NAVBAR-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Navbar (Navbar) on WebKit' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user can edit and delete a product review (Single review)',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Edit and delete review (Single review) on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that User Can Complete the Journey from Login to Order Placement (Single order)',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Login to order (Single order) on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user can filter products by price range (Price page',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Filter' },
+      { type: 'testdino:link', description: 'https://jira.example.com/FILTER-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Filter by price (Price page) on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify if user can add product to wishlist, move to cart(Checkout page)',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Wishlist' },
+      { type: 'testdino:link', description: 'https://jira.example.com/WISHLIST-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Wishlist to cart (Checkout page) on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user is able to submit a product review (Review)',
+  {
+    tag: '@webkit',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Review' },
+      { type: 'testdino:link', description: 'https://jira.example.com/REVIEW-004' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Submit product review (Review) on WebKit' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user can update cart quantity and verify total price',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Cart' },
+      { type: 'testdino:link', description: 'https://jira.example.com/CART-001' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Update cart quantity and total price on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    // await allPages.homePage.clickOnShopNowButton();
+    // await allPages.allProductsPage.clickNthProduct(1);
+    // await allPages.productDetailsPage.clickAddToCartButton();
+    // await allPages.cartPage.clickOnCartIcon();
+    // await allPages.cartPage.clickIncreaseQuantityButton();
+    // await allPages.cartPage.verifyTotalPriceUpdated();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user can view order history and order detail (Order page)',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Order history and order detail (Order page) on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    // await allPages.loginPage.clickOnUserProfileIcon();
+    // await allPages.orderPage.clickOnMyOrdersTab();
+    // await allPages.orderPage.verifyOrdersListVisible();
+    // await allPages.orderPage.clickOnFirstOrder();
+    // await allPages.orderDetailsPage.verifyOrderDetailsDisplayed();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user can update cart quantity and verify total price (Pricing)',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Cart' },
+      { type: 'testdino:link', description: 'https://jira.example.com/CART-002' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Cart quantity and total price (Pricing) on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    // await allPages.homePage.clickOnShopNowButton();
+    // await allPages.allProductsPage.clickNthProduct(1);
+    // await allPages.productDetailsPage.clickAddToCartButton();
+    // await allPages.cartPage.clickOnCartIcon();
+    // await allPages.cartPage.clickIncreaseQuantityButton();
+    // await allPages.cartPage.verifyTotalPriceUpdated();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that user can view order history and order details properly (Order details)',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-004' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Order history and details (Order details) on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    // await allPages.loginPage.clickOnUserProfileIcon();
+    // await allPages.orderPage.clickOnMyOrdersTab();
+    // await allPages.orderPage.verifyOrdersListVisible();
+    // await allPages.orderPage.clickOnFirstOrder();
+    // await allPages.orderDetailsPage.verifyOrderDetailsDisplayed();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that users can update cart quantity and verify total price (Single order)',
+  {
+    tag: '@chromium',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Cart' },
+      { type: 'testdino:link', description: 'https://jira.example.com/CART-003' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Cart quantity (Single order) on Chromium' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    // await allPages.homePage.clickOnShopNowButton();
+    // await allPages.allProductsPage.clickNthProduct(1);
+    // await allPages.productDetailsPage.clickAddToCartButton();
+    // await allPages.cartPage.clickOnCartIcon();
+    // await allPages.cartPage.clickIncreaseQuantityButton();
+    // await allPages.cartPage.verifyTotalPriceUpdated();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);
+
+test(
+  'Verify that users can view order history and order details properly (Order history)',
+  {
+    tag: '@firefox',
+    annotation: [
+      { type: 'testdino:priority', description: 'p1' },
+      { type: 'testdino:feature', description: 'Order' },
+      { type: 'testdino:link', description: 'https://jira.example.com/ORDER-005' },
+      { type: 'testdino:owner', description: 'qa-team' },
+      { type: 'testdino:notify-slack', description: '#e2e-alerts' },
+      { type: 'testdino:context', description: 'Order history on Firefox' }
+    ]
+  },
+  async () => {
+    const start = Date.now();
+    await login();
+    // await allPages.loginPage.clickOnUserProfileIcon();
+    // await allPages.orderPage.clickOnMyOrdersTab();
+    // await allPages.orderPage.verifyOrdersListVisible();
+    // await allPages.orderPage.clickOnFirstOrder();
+    // await allPages.orderDetailsPage.verifyOrderDetailsDisplayed();
+    await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+  }
+);

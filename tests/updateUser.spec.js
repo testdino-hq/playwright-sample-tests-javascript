@@ -19,6 +19,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'PUT/PATCH update user API' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 1;
     const updateData = {
       firstName: 'John',
@@ -35,6 +36,25 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(body).toHaveProperty('id', userId);
     expect(body).toHaveProperty('firstName', updateData.firstName);
     expect(body).toHaveProperty('lastName', updateData.lastName);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Update user with empty payload', {
@@ -48,6 +68,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'Update user with empty payload' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 2;
     const response = await request.put(`${API_BASE_URL}${USERS_ENDPOINT}/${userId}`, {
       data: {}
@@ -57,6 +78,25 @@ test.describe('PUT / PATCH Update User API', () => {
     const body = await response.json();
     expect(body).toBeInstanceOf(Object);
     expect(body).toHaveProperty('id', userId);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Update only one field', {
@@ -70,6 +110,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'PATCH partial user update' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 3;
     const updateData = {
       firstName: 'UpdatedFirstName'
@@ -84,6 +125,25 @@ test.describe('PUT / PATCH Update User API', () => {
     const body = await response.json();
     expect(body).toHaveProperty('id', userId);
     expect(body).toHaveProperty('firstName', updateData.firstName);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Validate returned name field', {
@@ -97,6 +157,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'Validate returned name field from update' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 4;
     const updateData = {
       firstName: 'Jane',
@@ -115,6 +176,25 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(typeof body.lastName).toBe('string');
     expect(body.firstName).toBe(updateData.firstName);
     expect(body.lastName).toBe(updateData.lastName);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Update and validate response contains updatedAt simulation', {
@@ -128,6 +208,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'Validate updatedAt in update response' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 5;
     const updateData = {
       firstName: 'Updated',
@@ -149,6 +230,25 @@ test.describe('PUT / PATCH Update User API', () => {
     // At minimum, validate the response structure
     expect(body).toBeInstanceOf(Object);
     expect(body).toHaveProperty('id', userId);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Login failure (invalid creds)', {
@@ -162,6 +262,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'Auth login failure with invalid credentials' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const loginData = {
       username: 'invaliduser',
       password: 'wrongpassword'
@@ -175,6 +276,25 @@ test.describe('PUT / PATCH Update User API', () => {
     expect([400, 401, 403]).toContain(response.status());
     const body = await response.json();
     expect(body).toBeInstanceOf(Object);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Login missing fields returns 400', {
@@ -188,6 +308,7 @@ test.describe('PUT / PATCH Update User API', () => {
       { type: 'testdino:context', description: 'Login missing fields returns 400' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const loginData = {
       username: 'kminchelle'
     };
@@ -199,5 +320,24 @@ test.describe('PUT / PATCH Update User API', () => {
     expect(response.status()).toBe(400);
     const body = await response.json();
     expect(body).toBeInstanceOf(Object);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 });

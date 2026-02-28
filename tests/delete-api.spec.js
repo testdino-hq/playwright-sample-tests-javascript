@@ -18,6 +18,7 @@ test.describe('DELETE User API', () => {
       { type: 'testdino:context', description: 'DELETE remove user by ID' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 1;
     const response = await request.delete(`${API_BASE_URL}${USERS_ENDPOINT}/${userId}`);
     
@@ -25,6 +26,25 @@ test.describe('DELETE User API', () => {
     const body = await response.json();
     expect(body).toHaveProperty('id', userId);
     expect(body).toHaveProperty('isDeleted', true);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Remove user twice', {
@@ -38,6 +58,7 @@ test.describe('DELETE User API', () => {
       { type: 'testdino:context', description: 'DELETE user twice idempotency' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 2;
     
     // First deletion
@@ -50,6 +71,25 @@ test.describe('DELETE User API', () => {
     expect(response2.status()).toBe(200);
     const body2 = await response2.json();
     expect(body2).toHaveProperty('id', userId);
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 2,
+        unit: 'count',
+      }),
+    });
   });
 
   test('Validate body is returned', {
@@ -63,6 +103,7 @@ test.describe('DELETE User API', () => {
       { type: 'testdino:context', description: 'DELETE response body validation' }
     ]
   }, async ({ request }) => {
+    const start = Date.now();
     const userId = 3;
     const response = await request.delete(`${API_BASE_URL}${USERS_ENDPOINT}/${userId}`);
     
@@ -73,5 +114,24 @@ test.describe('DELETE User API', () => {
     expect(body).toBeInstanceOf(Object);
     expect(body).toHaveProperty('id');
     expect(typeof body.id).toBe('number');
+
+    const responseTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-response-time',
+        value: responseTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'api-calls',
+        value: 1,
+        unit: 'count',
+      }),
+    });
   });
 });

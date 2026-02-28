@@ -39,8 +39,19 @@ test('Verify that user can login and logout successfully', {
     { type: 'testdino:context', description: 'Login and logout on Android' }
   ]
 }, async () => {
+  const start = Date.now();
   await login();
   await logout();
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that all the navbar are working properly', {
@@ -54,6 +65,7 @@ test('Verify that all the navbar are working properly', {
     { type: 'testdino:context', description: 'Navbar functionality on WebKit' }
   ]
 }, async () => {
+    const start = Date.now();
     // await login();
     await allPages.homePage.clickBackToHomeButton();
     // await allPages.homePage.assertHomePage();
@@ -63,6 +75,16 @@ test('Verify that all the navbar are working properly', {
     await allPages.contactUsPage.assertContactUsTitle();
     await allPages.homePage.clickAboutUsNav();
     await allPages.homePage.assertAboutUsTitle();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
 });
 
 test('Verify that user can edit and delete a product review', {
@@ -76,6 +98,7 @@ test('Verify that user can edit and delete a product review', {
     { type: 'testdino:context', description: 'Edit and delete product review on Firefox' }
   ]
 }, async () => {
+  const start = Date.now();
   await test.step('Login as existing user and navigate to a product', async () => {
     // await login();
   })
@@ -110,7 +133,18 @@ test('Verify that user can edit and delete a product review', {
 
   await test.step('Delete the submitted review and verify deletion', async () => {
     await allPages.productDetailsPage.clickOnDeleteReviewBtn();
-  })
+  });
+
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that User Can Complete the Journey from Login to Order Placement', {
@@ -124,6 +158,7 @@ test('Verify that User Can Complete the Journey from Login to Order Placement', 
     { type: 'testdino:context', description: 'Login to order placement journey on iOS' }
   ]
 }, async () => {
+  const start = Date.now();
   const productName = 'GoPro HERO10 Black';
   // await login();
   await allPages.inventoryPage.clickOnShopNowButton();
@@ -141,6 +176,16 @@ test('Verify that User Can Complete the Journey from Login to Order Placement', 
   // await allPages.checkoutPage.verifyCashOnDeliverySelected();
   // await allPages.checkoutPage.clickOnPlaceOrder();
   // await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that a New User Can Successfully Complete the Journey from Registration to a Single Order Placement', {
@@ -154,6 +199,7 @@ test('Verify that a New User Can Successfully Complete the Journey from Registra
     { type: 'testdino:context', description: 'Registration to single order on Android' }
   ]
 }, async () => {
+  const start = Date.now();
   // fresh test data
   const email = `test+${Date.now()}@test.com`;
   const firstName = 'Test';
@@ -263,6 +309,17 @@ test('Verify that a New User Can Successfully Complete the Journey from Registra
     // await allPages.orderDetailsPage.assertOrderSummaryTotalValue(formattedSubtotal);
     // await allPages.orderDetailsPage.clickBackToHomeButton();
   });
+
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that user add product to cart before logging in and then complete order after logging in', {
@@ -276,6 +333,7 @@ test('Verify that user add product to cart before logging in and then complete o
     { type: 'testdino:context', description: 'Add to cart before login, order after login on WebKit' }
   ]
 }, async () => {
+  const start = Date.now();
   await test.step('Navigate and add product to cart before logging in', async () => {
     await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickProductImage();
@@ -293,6 +351,16 @@ test('Verify that user add product to cart before logging in and then complete o
 //     await allPages.checkoutPage.clickOnPlaceOrder();
 //     await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
 // })
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that user can filter products by price range', {
@@ -306,11 +374,22 @@ test('Verify that user can filter products by price range', {
     { type: 'testdino:context', description: 'Filter products by price range' }
   ]
 }, async () => {
+    const start = Date.now();
     await login();
     await allPages.homePage.clickOnShopNowButton();
     await allPages.homePage.clickOnFilterButton();
     await allPages.homePage.AdjustPriceRangeSlider('10000', '20000');
     await allPages.homePage.clickOnFilterButton();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
 });
 
 test('Verify if user can add product to wishlist, moves it to card and then checks out', {
@@ -324,6 +403,7 @@ test('Verify if user can add product to wishlist, moves it to card and then chec
     { type: 'testdino:context', description: 'Wishlist to cart and checkout' }
   ]
 }, async () => {
+    const start = Date.now();
     // await login();
   
     await test.step('Add product to wishlistand then add to cart', async () => {
@@ -343,8 +423,18 @@ test('Verify if user can add product to wishlist, moves it to card and then chec
       // await allPages.checkoutPage.verifyCashOnDeliverySelected();
       // await allPages.checkoutPage.clickOnPlaceOrder();
       // await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-    })
-  
+    });
+
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
 });
 
 test.describe('Orders Module', () => {
@@ -360,6 +450,7 @@ test.describe('Orders Module', () => {
         { type: 'testdino:context', description: 'Critical order cancellation flow for new users' }
       ]
     }, async () => {
+    const start = Date.now();
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -388,7 +479,18 @@ test.describe('Orders Module', () => {
     productName = await allPages.allProductsPage.getNthProductName(1);
     await allPages.allProductsPage.clickNthProduct(1);
     await allPages.productDetailsPage.clickAddToCartButton();
-  })
+  });
+
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'order-flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 
   // await test.step('Add product to cart, add new address and checkout', async () => {
   //   await allPages.productDetailsPage.clickCartIcon();
@@ -430,6 +532,7 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
     { type: 'testdino:context', description: 'Registration to multiple order placement on Firefox' }
   ]
 }, async () => {
+    const start = Date.now();
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -474,7 +577,18 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
     // await allPages.checkoutPage.verifyCashOnDeliverySelected();
     // await allPages.checkoutPage.clickOnPlaceOrder();
     // await allPages.checkoutPage.verifyOrderPlacedSuccessfully();
-  })
+  });
+
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully', {
@@ -488,6 +602,7 @@ test('Verify that the new user is able to Sign Up, Log In, and Navigate to the H
     { type: 'testdino:context', description: 'Sign up, login and navigate home on iOS' }
   ]
 }, async () => {
+    const start = Date.now();
     const email = `test+${Date.now()}@test.com`;
     const firstName = 'Test';
     const lastName = 'User';
@@ -507,6 +622,16 @@ test('Verify that the new user is able to Sign Up, Log In, and Navigate to the H
   //   await allPages.loginPage.verifySuccessSignIn();
   //   await expect(allPages.homePage.getHomeNav()).toBeVisible({ timeout: 30000 });
   // })
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 })
 
 test('Verify that user is able to fill Contact Us page successfully', {
@@ -520,11 +645,22 @@ test('Verify that user is able to fill Contact Us page successfully', {
     { type: 'testdino:context', description: 'Contact Us form submission on Chromium' }
   ]
 }, async () => {
+    const start = Date.now();
     await login();
     await allPages.homePage.clickOnContactUsLink();
     await allPages.contactUsPage.assertContactUsTitle();
     await allPages.contactUsPage.fillContactUsForm();
     await allPages.contactUsPage.verifySuccessContactUsFormSubmission();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
 });
 
 test('Verify that user is able to submit a product review', {
@@ -538,6 +674,7 @@ test('Verify that user is able to submit a product review', {
     { type: 'testdino:context', description: 'Submit product review on Firefox' }
   ]
 }, async () => {
+  const start = Date.now();
   await test.step('Login as existing user and navigate to a product', async () => {
     // await login();
   })
@@ -559,7 +696,18 @@ test('Verify that user is able to submit a product review', {
         title: 'Great Product',
         opinion: 'This product exceeded my expectations. Highly recommend!'
     });
-  })
+  });
+
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that user can update personal information', {
@@ -573,9 +721,20 @@ test('Verify that user can update personal information', {
     { type: 'testdino:context', description: 'Update personal information on WebKit' }
   ]
 }, async () => {
+  const start = Date.now();
   await allPages.userPage.clickOnUserProfileIcon();
 //   await allPages.userPage.updatePersonalInfo();
 //   await allPages.userPage.verifyPersonalInfoUpdated();
+  const flowTime = Date.now() - start;
+  test.info().annotations.push({
+    type: 'testdino:metric',
+    description: JSON.stringify({
+      name: 'flow-time',
+      value: flowTime,
+      unit: 'ms',
+      threshold: 5000,
+    }),
+  });
 });
 
 test('Verify that user is able to delete selected product from cart', {
@@ -589,6 +748,7 @@ test('Verify that user is able to delete selected product from cart', {
     { type: 'testdino:context', description: 'Delete selected product from cart on Android' }
   ]
 }, async () => {
+    const start = Date.now();
     const productName = 'GoPro HERO10 Black';
     await login();
     await allPages.inventoryPage.clickOnShopNowButton();
@@ -604,4 +764,14 @@ test('Verify that user is able to delete selected product from cart', {
     await allPages.cartPage.verifyEmptyCartMessage();
     await allPages.cartPage.clickOnStartShoppingButton();
     await allPages.allProductsPage.assertAllProductsTitle();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
 });

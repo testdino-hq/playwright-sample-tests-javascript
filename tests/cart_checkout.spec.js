@@ -39,11 +39,22 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
       ]
     },
     async ({}, testInfo) => {
+      const start = Date.now();
       await login();
       if (testInfo.retry < 2) {
         throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
       }
       await expect(true).toBeTruthy();
+      const flowTime = Date.now() - start;
+      test.info().annotations.push({
+        type: 'testdino:metric',
+        description: JSON.stringify({
+          name: 'flow-time',
+          value: flowTime,
+          unit: 'ms',
+          threshold: 5000,
+        }),
+      });
     }
   );
 
@@ -61,11 +72,22 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
       ]
     },
     async ({}, testInfo) => {
+      const start = Date.now();
       await login();
       if (testInfo.retry < 2) {
         throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
       }
       await expect(true).toBeTruthy();
+      const flowTime = Date.now() - start;
+      test.info().annotations.push({
+        type: 'testdino:metric',
+        description: JSON.stringify({
+          name: 'flow-time',
+          value: flowTime,
+          unit: 'ms',
+          threshold: 5000,
+        }),
+      });
     }
   );
 
@@ -83,11 +105,22 @@ test.describe('Flaky tests (pass on 2nd retry)', () => {
       ]
     },
     async ({}, testInfo) => {
+      const start = Date.now();
       await login();
       if (testInfo.retry < 2) {
         throw new Error(`Flaky: failing on attempt ${testInfo.retry + 1}, will pass on 2nd retry`);
       }
       await expect(true).toBeTruthy();
+      const flowTime = Date.now() - start;
+      test.info().annotations.push({
+        type: 'testdino:metric',
+        description: JSON.stringify({
+          name: 'flow-time',
+          value: flowTime,
+          unit: 'ms',
+          threshold: 5000,
+        }),
+      });
     }
   );
 });
@@ -109,8 +142,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -128,8 +172,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -147,8 +202,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -166,7 +232,18 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -184,8 +261,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -203,8 +291,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -222,8 +321,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -241,8 +351,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -260,8 +381,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -279,7 +411,18 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -297,8 +440,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -316,8 +470,19 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -335,6 +500,7 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     // await allPages.homePage.clickOnShopNowButton();
     // await allPages.allProductsPage.clickNthProduct(1);
@@ -343,6 +509,16 @@ test(
     // await allPages.cartPage.clickIncreaseQuantityButton();
     // await allPages.cartPage.verifyTotalPriceUpdated();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -360,6 +536,7 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     // await allPages.loginPage.clickOnUserProfileIcon();
     // await allPages.orderPage.clickOnMyOrdersTab();
@@ -367,6 +544,16 @@ test(
     // await allPages.orderPage.clickOnFirstOrder();
     // await allPages.orderDetailsPage.verifyOrderDetailsDisplayed();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -384,6 +571,7 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     // await allPages.homePage.clickOnShopNowButton();
     // await allPages.allProductsPage.clickNthProduct(1);
@@ -392,6 +580,16 @@ test(
     // await allPages.cartPage.clickIncreaseQuantityButton();
     // await allPages.cartPage.verifyTotalPriceUpdated();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -409,6 +607,7 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     // await allPages.loginPage.clickOnUserProfileIcon();
     // await allPages.orderPage.clickOnMyOrdersTab();
@@ -416,6 +615,16 @@ test(
     // await allPages.orderPage.clickOnFirstOrder();
     // await allPages.orderDetailsPage.verifyOrderDetailsDisplayed();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -433,6 +642,7 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     // await allPages.homePage.clickOnShopNowButton();
     // await allPages.allProductsPage.clickNthProduct(1);
@@ -441,6 +651,16 @@ test(
     // await allPages.cartPage.clickIncreaseQuantityButton();
     // await allPages.cartPage.verifyTotalPriceUpdated();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );
 
@@ -458,6 +678,7 @@ test(
     ]
   },
   async () => {
+    const start = Date.now();
     await login();
     // await allPages.loginPage.clickOnUserProfileIcon();
     // await allPages.orderPage.clickOnMyOrdersTab();
@@ -465,5 +686,15 @@ test(
     // await allPages.orderPage.clickOnFirstOrder();
     // await allPages.orderDetailsPage.verifyOrderDetailsDisplayed();
     await expect(true).toBeTruthy();
+    const flowTime = Date.now() - start;
+    test.info().annotations.push({
+      type: 'testdino:metric',
+      description: JSON.stringify({
+        name: 'flow-time',
+        value: flowTime,
+        unit: 'ms',
+        threshold: 5000,
+      }),
+    });
   }
 );

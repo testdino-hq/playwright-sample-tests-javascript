@@ -157,7 +157,6 @@ jobs:
           echo "STATE=${{ secrets.STATE }}" >> .env
           echo "COUNTRY=${{ secrets.COUNTRY }}" >> .env
           echo "ZIP_CODE=${{ secrets.ZIP_CODE }}" >> .env
-
       # ✅ Cache npm dependencies
       - name: Cache npm dependencies
         uses: actions/cache@v3
@@ -166,14 +165,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       # ✅ Install dependencies + TestDino (.tgz) + Playwright browsers
       - name: Install dependencies & browsers
         run: |
           npm install
           npm install --save-dev @testdino/playwright@latest
-          npx playwright install --with-deps chromium firefox webkit
-
+          npx playwright install --with-deps chromium webkit firefox
       # ✅ Run Playwright shard with TestDino
       - name: Run Playwright shard with TestDino
         env:
@@ -181,8 +178,8 @@ jobs:
         run: |
           npx playwright test \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
-            --grep "@chromium|@firefox|@webkit|@android|@ios|@api" \
-
+            --grep="@chromium|@firefox|@webkit|@android|@ios|@api" \
+            
       # ✅ Upload blob report (needed for merge)
       - name: Upload blob report
         if: ${{ !cancelled() }}

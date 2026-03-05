@@ -1,17 +1,3 @@
-<p align="center">
-  <a href="https://github.com/testdino-hq/playwright-sample-tests-javascript/actions/workflows/test.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/testdino-hq/playwright-sample-tests-javascript/test.yml?label=CI Status&logo=none" alt="CI Status">
-  </a>
-  <a href="https://www.npmjs.com/package/tdpw">
-    <img src="https://img.shields.io/npm/v/tdpw?color=blue" alt="npm version">
-  </a>
-  <a href="https://www.npmjs.com/package/tdpw">
-    <img src="https://img.shields.io/npm/unpacked-size/tdpw?color=orange" alt="install size">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
-  </a>
-</p>
 # Ecommerce-demo-test-playwright
 
 Automated end-to-end tests for Ecommerce Demo store using [Playwright](https://playwright.dev/).

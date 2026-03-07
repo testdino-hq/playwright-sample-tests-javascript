@@ -17,14 +17,11 @@ export default defineConfig({
 
   timeout: 30 * 1000,
 
-  reporter: [
-    ['blob', { outputDir: 'blob-report' }],   // Required for shard merging
-    ['json', { outputFile: './playwright-report/report.json' }], // Required for TestDino
-    ['html', {
-      outputFolder: 'playwright-report',
-      open: 'never'
-    }]
-  ],
+reporter: [ 
+  ['html', { outputFolder: 'playwright-report', open: 'never' }], 
+  ['blob', { outputDir: 'blob-report' }], // Blob reporter for merging 
+  ['json', { outputFile: './playwright-report/report.json' }], 
+],
 
   use: {
     baseURL: 'https://storedemo.testdino.com',

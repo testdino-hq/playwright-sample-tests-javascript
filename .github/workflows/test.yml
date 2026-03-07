@@ -108,4 +108,7 @@ jobs:
         env:
           TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
         run: |
-          npx tdpw upload ./playwright-report --token="$TESTDINO_TOKEN"
+          npx tdpw upload ./playwright-report \
+            --upload-traces \
+            --upload-html \
+            --token="$TESTDINO_TOKEN"

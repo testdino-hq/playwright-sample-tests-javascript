@@ -9,7 +9,7 @@ on:
 
 jobs:
   run-tests:
-    name: Run Playwright tests ${{ matrix.shardIndex }}/3
+    name: Run Playwright tests ${{ matrix.shardIndex }}/5
     runs-on: ubuntu-latest
 
     strategy:

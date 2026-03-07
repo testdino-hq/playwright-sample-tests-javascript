@@ -54,7 +54,7 @@ jobs:
       - name: Run Playwright Tests
         run: |
           npx playwright test \
-            --grep="@chromium|@firefox|@webkit" \
+            --grep="@chromium|@firefox|@webkit|@api|@andriod|@ios" \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       - name: Upload blob report

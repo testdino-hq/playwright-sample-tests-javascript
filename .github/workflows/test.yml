@@ -1,6 +1,5 @@
 # .github/workflows/playwright-daily.yml
 # Runs Playwright test shards every day at **11 : 42 AM IST** (06 : 12 UTC)
-# plus anytime you trigger it manually from the Actions tab.
 
 # name: Run Playwright tests
 

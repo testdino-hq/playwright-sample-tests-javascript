@@ -9,17 +9,18 @@ on:
 
 jobs:
   run-tests:
-    name: Run Playwright tests ${{ matrix.shardIndex }}/3
+    name: Run shard ${{ matrix.shardIndex }}/5
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1, 2, 3]
-        shardTotal: [3]
+        shardIndex: [1, 2, 3, 4, 5]
+        shardTotal: [5]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v3

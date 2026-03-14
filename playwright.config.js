@@ -1,75 +1,69 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
-// Load environment variables
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const isCI = !!process.env.CI;
 
 export default defineConfig({
   testDir: './tests',
-  snapshotDir: './__screenshots__',  // ✅ Baseline image storage
+
   fullyParallel: true,
   forbidOnly: isCI,
-  retries: isCI ? 1 : 1, // Enable retries for flaky test behavior
-  workers: isCI ? 5 : 5,
 
-  timeout: 60 * 1000,
-  expect: {
-    timeout: 10 * 1000,
-  },
-  
+  // ✅ Retries set to 2
+  retries: isCI ? 2 : 2,
+
+  workers: isCI ? 1 : 1,
+
+  timeout: 30 * 1000,
+
   reporter: [
-    ['html', {
-      outputFolder: 'playwright-report',
-      open: 'never'
-    }],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['blob', { outputDir: 'blob-report' }], // Blob reporter for merging
     ['json', { outputFile: './playwright-report/report.json' }],
-    ['@testdino/playwright', { token: process.env.TESTDINO_TOKEN }],
   ],
 
   use: {
-    baseURL: 'https://storedemo.testdino.com/products',
+    baseURL: 'https://storedemo.testdino.com',
     headless: true,
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    actionTimeout: 15 * 1000,
-    navigationTimeout: 30 * 1000,
+
+    // ✅ Always capture debugging artifacts
+    trace: 'on',
+    screenshot: 'on',
+    video: 'on',
   },
 
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      grep: /@chromium/, // only run tests tagged @chromium
+      grep: /@chromium/,
     },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      grep: /@firefox/, // only run tests tagged @firefox
+      grep: /@firefox/,
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      grep: /@webkit/, // only run tests tagged @webkit
+      grep: /@webkit/,
     },
     {
       name: 'android',
       use: { ...devices['Pixel 5'] },
-      grep: /@android/, // only run tests tagged @android
+      grep: /@android/,
     },
     {
       name: 'ios',
-      use: { ...devices['iPhone 14'] },
-      grep: /@ios/, // only run tests tagged @ios
+      use: { ...devices['iPhone 12'] },
+      grep: /@ios/,
     },
     {
       name: 'api',
-      use: { ...devices['API'] },
-      grep: /@api/, // only run tests tagged @api
+      grep: /@api/,
     },
   ],
 });

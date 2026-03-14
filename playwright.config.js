@@ -13,7 +13,7 @@ export default defineConfig({
   forbidOnly: isCI,
 
   // ✅ Retries set to 2
-  retries: isCI ? 2 : 2,
+  retries: 2,
 
   workers: isCI ? 1 : 1,
 

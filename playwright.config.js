@@ -26,7 +26,7 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: 'https://storedemo.testdino.com',
+    baseURL: 'https://storedemo.testdino.com/',
     headless: true,
 
     // ✅ Always capture debugging artifacts

@@ -167,7 +167,7 @@ test('Verify that user can complete the journey from login to order placement', 
   await allPages.inventoryPage.verifyProductTitleVisible(productName);
   await allPages.inventoryPage.clickOnAddToCartIcon();
 
-  // await allPages.cartPage.clickOnCartIcon();
+
   // await allPages.cartPage.verifyCartItemVisible(productName);
   // await allPages.cartPage.clickOnCheckoutButton();
   // await allPages.checkoutPage.verifyCheckoutTitle();

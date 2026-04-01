@@ -28,7 +28,7 @@ async function logout() {
   await allPages.loginPage.clickOnLogoutButton();
 }
 
-test('Verify that user can login and logout successfully', {
+test('Verify that user can log in and log out successfully', {
   tag: '@android',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -54,7 +54,7 @@ test('Verify that user can login and logout successfully', {
   });
 });
 
-test('Verify that all the navbar are working properly', {
+test('Verify that all navbar links work properly', {
   tag: '@webkit',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -147,7 +147,7 @@ test('Verify that user can edit and delete a product review', {
   });
 });
 
-test('Verify that User Can Complete the Journey from Login to Order Placement', {
+test('Verify that user can complete the journey from login to order placement', {
   tag: '@ios',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -188,7 +188,7 @@ test('Verify that User Can Complete the Journey from Login to Order Placement', 
   });
 });
 
-test('Verify that a New User Can Successfully Complete the Journey from Registration to a Single Order Placement', {
+test('Verify that a new user can complete the journey from registration to a single order placement', {
   tag: '@android',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -322,7 +322,7 @@ test('Verify that a New User Can Successfully Complete the Journey from Registra
   });
 });
 
-test('Verify that user add product to cart before logging in and then complete order after logging in', {
+test('Verify that user can add product to cart before logging in and complete order after logging in', {
   tag: '@webkit',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -392,7 +392,7 @@ test('Verify that user can filter products by price range', {
     });
 });
 
-test('Verify if user can add product to wishlist, moves it to card and then checks out', {
+test('Verify that user can add product to wishlist, move it to cart, and checkout', {
   tag: '@wishlist',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -439,7 +439,7 @@ test('Verify if user can add product to wishlist, moves it to card and then chec
 
 test.describe('Orders Module', () => {
   test.describe('Order Cancellation', () => {
-    test('Verify new user views and cancels an order in my orders ', {
+    test('Verify that new user can view and cancel an order in My Orders', {
       tag: '@chromium',
       annotation: [
         { type: 'testdino:priority', description: 'p0' },
@@ -521,7 +521,7 @@ test.describe('Orders Module', () => {
   });
 });
 
-test('Verify That a New User Can Successfully Complete the Journey from Registration to a Multiple Order Placement', {
+test('Verify that a new user can complete the journey from registration to multiple order placements', {
   tag: '@firefox',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -591,7 +591,7 @@ test('Verify That a New User Can Successfully Complete the Journey from Registra
   });
 });
 
-test('Verify that the new user is able to Sign Up, Log In, and Navigate to the Home Page Successfully', {
+test('Verify that a new user can sign up, log in, and navigate to the home page successfully', {
   tag: '@ios',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -634,7 +634,7 @@ test('Verify that the new user is able to Sign Up, Log In, and Navigate to the H
   });
 })
 
-test('Verify that user is able to fill Contact Us page successfully', {
+test('Verify that user can fill and submit the Contact Us form successfully', {
   tag: '@chromium',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -663,7 +663,7 @@ test('Verify that user is able to fill Contact Us page successfully', {
     });
 });
 
-test('Verify that user is able to submit a product review', {
+test('Verify that user can submit a product review', {
   tag: '@firefox',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -710,7 +710,7 @@ test('Verify that user is able to submit a product review', {
   });
 });
 
-test('Verify that user can update personal information', {
+test('Verify that user can update personal information in profile', {
   tag: '@webkit',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },
@@ -737,7 +737,7 @@ test('Verify that user can update personal information', {
   });
 });
 
-test('Verify that user is able to delete selected product from cart', {
+test('Verify that user can delete a selected product from cart', {
   tag: '@android',
   annotation: [
     { type: 'testdino:priority', description: 'p1' },

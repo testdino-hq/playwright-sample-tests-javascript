@@ -9,7 +9,7 @@ const isCI = !!process.env.CI;
 
 export default defineConfig({
   testDir: './tests',
-  snapshotDir: './__screenshots__',  // ✅ Baseline image storage
+  snapshotDir: './__screenshots__', 
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 1 : 1, // Enable retries for flaky test behavior
@@ -21,13 +21,10 @@ export default defineConfig({
   },
   
   reporter: [
-    ['html', {
-      outputFolder: 'playwright-report',
-      open: 'never'
-    }],
-    ['blob', { outputDir: 'blob-report' }], // Blob reporter for merging
+    // Mandatory reporter for JSON results
     ['json', { outputFile: './playwright-report/report.json' }],
-    ['@testdino/playwright', { token: process.env.TESTDINO_TOKEN }],
+    // Optional, enables native HTML upload
+    ['html', { outputDir: './playwright-report' }],
   ],
 
   use: {

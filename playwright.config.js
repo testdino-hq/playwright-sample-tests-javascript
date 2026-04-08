@@ -21,10 +21,8 @@ export default defineConfig({
   },
   
   reporter: [
-    // Mandatory reporter for JSON results
-    ['json', { outputFile: './playwright-report/report.json' }],
-    // Optional, enables native HTML upload
     ['html', { outputDir: './playwright-report' }],
+    ['json', { outputFile: './playwright-report/report.json' }],
   ],
 
   use: {

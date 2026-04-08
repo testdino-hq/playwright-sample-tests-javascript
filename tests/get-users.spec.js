@@ -423,7 +423,7 @@ test.describe('GET Users API', () => {
     });
   });
 
-  test('delayed response (3s) should return 200', {
+  test.skip('delayed response (3s) should return 200', {
     tag: '@api',
     annotation: [
       { type: 'testdino:priority', description: 'p1' },

@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "dotenv": "^17.2.1",
-    "tdpw": "^1.0.34",
-    "testdino-mcp": "file:testdino-mcp-1.0.7.tgz"
+    "tdpw": "^1.0.34"
   }
 }

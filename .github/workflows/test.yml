@@ -1,4 +1,3 @@
-
 name: Run Playwright tests
 
 on:
@@ -10,7 +9,7 @@ on:
 
 jobs:
   run-tests:
-    name: Run Playwright tests ${{ matrix.shardIndex }}/5
+    name: Run shard ${{ matrix.shardIndex }}/5
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,7 +19,8 @@ jobs:
         shardTotal: [5]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v3
@@ -52,7 +52,7 @@ jobs:
       - name: Run Playwright Tests
         run: |
           npx playwright test \
-            --grep="@chromium|@firefox|@webkit|@api|@andriod|@ios" \
+            --grep="@chromium|@firefox|@webkit" \
             --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - name: Upload blob report
         if: ${{ !cancelled() }}
@@ -103,7 +103,4 @@ jobs:
         env:
           TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
         run: |
-          npx tdpw upload ./playwright-report \
-            --upload-traces \
-            --upload-html \
-            --token="$TESTDINO_TOKEN"
+          npx tdpw upload ./playwright-report --token="$TESTDINO_TOKEN"

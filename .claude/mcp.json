@@ -1,0 +1,10 @@
+{
+    "mcpServers": {
+      "TestDino": {
+        "command": "/opt/homebrew/bin/testdino-mcp",
+        "env": {
+          "TESTDINO_PAT": "tpu_d50a352ff1a128668ecaeba1da1026825eb314678cf47751d50c55503c89297e"
+        }
+      }
+    }
+  }

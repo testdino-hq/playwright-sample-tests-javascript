@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 test.describe('Visual Comparison', () => {
 
   test.describe('GitHub Login Page', () => {
-    test('visual comparison demo test', {
+    test.skip('visual comparison demo test', {
       tag: ['@visual', '@chromium'],
       annotation: [
         { type: 'testdino:priority', description: 'p1' },

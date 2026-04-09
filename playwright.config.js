@@ -21,6 +21,7 @@ export default defineConfig({
   },
   
   reporter: [
+    ['blob'], // ✅ REQUIRED for sharding
     ['html', { outputDir: './playwright-report' }],
     ['json', { outputFile: './playwright-report/report.json' }],
   ],

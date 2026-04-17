@@ -56,8 +56,33 @@ jobs:
       - name: List Playwright projects (debug)
         run: npx playwright list --projects | cat
 
-      - name: Run shard ${{ matrix.shardIndex }} 
-        run: npx playwright test --grep="@chromium|@firefox|@webkit|@android|@ios|@api" --reporter=blob --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - name: Run Playwright (rerun failed tests if applicable)
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+          SHARD_INDEX: ${{ matrix.shardIndex }}
+          SHARD_TOTAL: ${{ matrix.shardTotal }}
+        run: |
+          echo "GitHub run attempt: ${{ github.run_attempt }}"
+          if [[ "${{ github.run_attempt }}" -gt 1 ]]; then
+            echo "Detected re-run. Checking failed test metadata from TestDino."
+            npx tdpw last-failed \
+              --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+              > last-failed-flags.txt
+            EXTRA_PW_FLAGS="$(cat last-failed-flags.txt)"
+            if [[ -n "$EXTRA_PW_FLAGS" ]]; then
+              echo "Running only failed tests for this shard:"
+              echo "$EXTRA_PW_FLAGS"
+              mkdir -p ./playwright-report
+              eval "npx playwright test $EXTRA_PW_FLAGS"
+              exit 0
+            fi
+            echo "No failed test metadata found. Falling back to full shard."
+          fi
+          mkdir -p ./playwright-report
+          npx playwright test \
+            --grep="@chromium|@firefox|@webkit|@android|@ios|@api" \
+            --reporter=blob \
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
@@ -66,6 +91,15 @@ jobs:
           name: blob-report-${{ matrix.shardIndex }}
           path: ./blob-report
           retention-days: 1
+
+      - name: Cache tdpw last failed metadata
+        if: always()
+        env:
+          TESTDINO_TOKEN: ${{ secrets.TESTDINO_TOKEN }}
+          SHARD_INDEX: ${{ matrix.shardIndex }}
+          SHARD_TOTAL: ${{ matrix.shardTotal }}
+        run: |
+          npx tdpw cache --verbose
 
   merge-reports:
     name: Merge Reports

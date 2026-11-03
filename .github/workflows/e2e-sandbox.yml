@@ -1,0 +1,167 @@
+# Run Playwright tests for a pull request inside an E2B sandbox when someone
+# comments on the PR, and post the results back as a PR comment.
+#
+# Usage: comment on a pull request
+#   /e2e                               run everything
+#   /e2e --grep "Sign Up"              only tests matching a title
+#   /e2e tests/login.spec.js           one file
+#   /e2e --project chromium --grep @smoke
+# Everything after "/e2e" is passed to `npx playwright test` unchanged.
+#
+# Required repository secrets:
+#   E2B_API_KEY         E2B project API key
+#   RUNNER_REPO_TOKEN   token that can read prat3ik/e2b-playwright-runner (only while that repo is private)
+#   USERNAME, PASSWORD, NEW_PASSWORD, FIRST_NAME, STREET_NAME, CITY   test data, same as test.yml
+# Optional repository variables:
+#   E2B_RUNNER_REPO     default prat3ik/e2b-playwright-runner
+#   E2B_RUNNER_REF      default main
+
+name: E2E in E2B sandbox
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: e2e-sandbox-pr-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    name: Run requested tests in E2B
+    if: >-
+      github.event.issue.pull_request
+      && startsWith(github.event.comment.body, '/e2e')
+      && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR_NUMBER: ${{ github.event.issue.number }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+    steps:
+      - name: Parse test arguments from the comment
+        id: args
+        env:
+          COMMENT: ${{ github.event.comment.body }}
+        run: |
+          # First line only, drop the "/e2e" prefix, keep the rest verbatim.
+          FIRST=$(printf '%s\n' "$COMMENT" | head -n1 | tr -d '\r')
+          ARGS=${FIRST#/e2e}
+          ARGS=$(printf '%s' "$ARGS" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          echo "args=$ARGS" >> "$GITHUB_OUTPUT"
+          echo "Playwright args: $ARGS"
+
+      - name: Acknowledge the comment
+        id: ack
+        env:
+          COMMENT_ID: ${{ github.event.comment.id }}
+          ARGS: ${{ steps.args.outputs.args }}
+        run: |
+          gh api -X POST "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID/reactions" -f content=eyes >/dev/null
+          BODY="⏳ Running \`/e2e $ARGS\` in an E2B sandbox… [workflow run]($RUN_URL)"
+          ID=$(gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" -f body="$BODY" --jq .id)
+          echo "comment_id=$ID" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the E2B runner
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.E2B_RUNNER_REPO || 'prat3ik/e2b-playwright-runner' }}
+          ref: ${{ vars.E2B_RUNNER_REF || 'main' }}
+          token: ${{ secrets.RUNNER_REPO_TOKEN || github.token }}
+          path: runner
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: runner/package-lock.json
+
+      - name: Install runner dependencies
+        working-directory: runner
+        run: npm ci --no-audit --no-fund
+
+      - name: Write test secrets for the sandbox
+        working-directory: runner
+        run: |
+          {
+            echo "USERNAME=${{ secrets.USERNAME }}"
+            echo "PASSWORD=${{ secrets.PASSWORD }}"
+            echo "NEW_PASSWORD=${{ secrets.NEW_PASSWORD }}"
+            echo "FIRST_NAME=${{ secrets.FIRST_NAME }}"
+            echo "STREET_NAME=${{ secrets.STREET_NAME }}"
+            echo "CITY=${{ secrets.CITY }}"
+          } > test.env
+
+      - name: Run tests in the E2B sandbox
+        id: run
+        working-directory: runner
+        continue-on-error: true
+        env:
+          E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
+          ARGS: ${{ steps.args.outputs.args }}
+        run: |
+          # Split ARGS like a shell would (quotes respected) without eval.
+          pw=()
+          if [ -n "$ARGS" ]; then
+            while IFS= read -r a; do pw+=("$a"); done < <(printf '%s' "$ARGS" | xargs -n1 printf '%s\n')
+          fi
+          set -o pipefail
+          npx tsx run.ts \
+            --repo "${{ github.event.repository.clone_url }}" \
+            --pr "$PR_NUMBER" \
+            --env-file test.env \
+            --out ../results \
+            -- "${pw[@]}" 2>&1 | tee ../run.log
+
+      - name: Build the results comment
+        working-directory: runner
+        env:
+          ARGS: ${{ steps.args.outputs.args }}
+        run: |
+          npx tsx summarize.ts ../results \
+            --run-url "$RUN_URL" \
+            --command "/e2e $ARGS" \
+            --log ../run.log > ../summary.md
+          cat ../summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-pr${{ github.event.issue.number }}-${{ github.run_id }}
+          path: |
+            results/playwright-report
+            results/test-results
+            run.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Post results on the pull request
+        if: always()
+        env:
+          ACK_ID: ${{ steps.ack.outputs.comment_id }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+          OUTCOME: ${{ steps.run.outcome }}
+        run: |
+          if [ ! -s summary.md ]; then
+            printf '### ❌ E2E workflow failed before producing results\n\nSee the [workflow run](%s).\n' "$RUN_URL" > summary.md
+          fi
+          if [ -n "$ACK_ID" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$ACK_ID" -F body=@summary.md >/dev/null
+          else
+            gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" -F body=@summary.md >/dev/null
+          fi
+          if [ "$OUTCOME" = "success" ]; then REACT=rocket; else REACT=-1; fi
+          gh api -X POST "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID/reactions" -f content="$REACT" >/dev/null
+
+      - name: Fail the job if tests failed
+        if: steps.run.outcome != 'success'
+        run: exit 1
